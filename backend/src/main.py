@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import settings
 from src.database import create_tables
+from src.models import RefreshToken, User  # noqa: F401 - register models for create_all
 from src.routes import (
     alarms,
     appointments,

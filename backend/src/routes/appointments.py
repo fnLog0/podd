@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-router = APIRouter(prefix="/appointments", tags=["appointments"])
+from src.auth.dependencies import get_current_user
+
+router = APIRouter(prefix="/appointments", tags=["appointments"], dependencies=[Depends(get_current_user)])
 
 
 @router.post("")

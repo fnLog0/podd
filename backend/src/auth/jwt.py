@@ -1,3 +1,4 @@
+import uuid
 from datetime import UTC, datetime, timedelta
 
 from jose import JWTError, jwt
@@ -8,7 +9,7 @@ from src.config import settings
 def create_access_token(subject: str) -> str:
     expire = datetime.now(UTC) + timedelta(minutes=settings.JWT_EXPIRATION_MINUTES)
     return jwt.encode(
-        {"sub": subject, "exp": expire, "type": "access"},
+        {"sub": subject, "exp": expire, "type": "access", "jti": str(uuid.uuid4())},
         settings.JWT_SECRET,
         algorithm=settings.JWT_ALGORITHM,
     )
@@ -17,7 +18,7 @@ def create_access_token(subject: str) -> str:
 def create_refresh_token(subject: str) -> str:
     expire = datetime.now(UTC) + timedelta(days=settings.JWT_REFRESH_EXPIRATION_DAYS)
     return jwt.encode(
-        {"sub": subject, "exp": expire, "type": "refresh"},
+        {"sub": subject, "exp": expire, "type": "refresh", "jti": str(uuid.uuid4())},
         settings.JWT_SECRET,
         algorithm=settings.JWT_ALGORITHM,
     )

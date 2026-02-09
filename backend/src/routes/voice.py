@@ -1,6 +1,8 @@
-from fastapi import APIRouter, UploadFile, File, WebSocket
+from fastapi import APIRouter, Depends, File, UploadFile, WebSocket
 
-router = APIRouter(prefix="/voice", tags=["voice"])
+from src.auth.dependencies import get_current_user
+
+router = APIRouter(prefix="/voice", tags=["voice"], dependencies=[Depends(get_current_user)])
 
 
 @router.post("/stream")

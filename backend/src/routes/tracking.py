@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-router = APIRouter(prefix="/tracking", tags=["tracking"])
+from src.auth.dependencies import get_current_user
+
+router = APIRouter(prefix="/tracking", tags=["tracking"], dependencies=[Depends(get_current_user)])
 
 
 @router.post("/water/log")
