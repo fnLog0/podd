@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from locusgraph import LocusGraph
 
-from app.config import settings
+from src.config import settings
 
 
 class LocusGraphService:

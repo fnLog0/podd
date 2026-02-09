@@ -2,17 +2,17 @@ from typing import Literal
 
 from langgraph.graph import StateGraph, END
 
-from app.workflows.state import PoddState
-from app.workflows.nodes.normalize import normalize_input
-from app.workflows.nodes.context import build_context_query, retrieve_locus_context
-from app.workflows.nodes.router import router_intent, route_to_agent
-from app.workflows.nodes.agents.food import agent_food_tracking
-from app.workflows.nodes.agents.medication import agent_medication
-from app.workflows.nodes.agents.health_query import agent_health_query
-from app.workflows.nodes.agents.recommendation import agent_recommendation
-from app.workflows.nodes.agents.general_chat import agent_general_chat
-from app.workflows.nodes.memory import store_events
-from app.workflows.nodes.response import format_response
+from src.workflows.state import PoddState
+from src.workflows.nodes.normalize import normalize_input
+from src.workflows.nodes.context import build_context_query, retrieve_locus_context
+from src.workflows.nodes.router import router_intent, route_to_agent
+from src.workflows.nodes.agents.food import agent_food_tracking
+from src.workflows.nodes.agents.medication import agent_medication
+from src.workflows.nodes.agents.health_query import agent_health_query
+from src.workflows.nodes.agents.recommendation import agent_recommendation
+from src.workflows.nodes.agents.general_chat import agent_general_chat
+from src.workflows.nodes.memory import store_events
+from src.workflows.nodes.response import format_response
 
 builder = StateGraph(PoddState)
 

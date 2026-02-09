@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
-from app.services.locusgraph_service import locusgraph_service
-from app.workflows.state import PoddState
+from src.services.locusgraph_service import locusgraph_service
+from src.workflows.state import PoddState
 
 
 def store_events(state: PoddState) -> dict:

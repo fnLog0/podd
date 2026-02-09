@@ -1,6 +1,6 @@
 import re
 
-from app.workflows.state import PoddState, Intent
+from src.workflows.state import PoddState, Intent
 
 FOOD_KEYWORDS = {
     "khana", "roti", "chawal", "eaten", "ate", "breakfast",

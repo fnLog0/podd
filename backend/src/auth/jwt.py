@@ -2,7 +2,7 @@ from datetime import UTC, datetime, timedelta
 
 from jose import JWTError, jwt
 
-from app.config import settings
+from src.config import settings
 
 
 def create_access_token(subject: str) -> str:

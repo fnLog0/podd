@@ -5,11 +5,11 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.auth.dependencies import get_current_user
-from app.auth.jwt import create_access_token, create_refresh_token, decode_token
-from app.database import get_db
-from app.models.user import User
-from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserResponse
+from src.auth.dependencies import get_current_user
+from src.auth.jwt import create_access_token, create_refresh_token, decode_token
+from src.database import get_db
+from src.models.user import User
+from src.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

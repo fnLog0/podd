@@ -1,5 +1,5 @@
-from app.services.locusgraph_service import locusgraph_service
-from app.workflows.state import PoddState
+from src.services.locusgraph_service import locusgraph_service
+from src.workflows.state import PoddState
 
 
 def build_context_query(state: PoddState) -> dict:

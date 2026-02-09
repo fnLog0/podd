@@ -16,7 +16,7 @@ pip install -e .
 ## Run
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn src.main:app --reload
 ```
 
 ## API Docs

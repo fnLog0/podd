@@ -1,5 +1,5 @@
 from sarvamai import SarvamAI
-from app.config import settings
+from src.config import settings
 
 
 class SarvamService:

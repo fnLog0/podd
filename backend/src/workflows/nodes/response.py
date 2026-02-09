@@ -1,4 +1,4 @@
-from app.workflows.state import PoddState
+from src.workflows.state import PoddState
 
 
 def format_response(state: PoddState) -> dict:
