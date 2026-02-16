@@ -1,0 +1,23 @@
+meta {
+  name: Create Meditation Log
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/meditation/log
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "session_id": "{{session_id}}",
+    "duration_minutes": 15,
+    "completed_at": "2024-02-16T07:00:00Z"
+  }
+}

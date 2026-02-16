@@ -1,0 +1,15 @@
+meta {
+  name: Get Food Logs
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/health/food/logs
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

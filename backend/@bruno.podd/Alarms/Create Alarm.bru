@@ -1,0 +1,23 @@
+meta {
+  name: Create Alarm
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/alarms
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "time": "08:00",
+    "label": "Morning medication",
+    "repeat": "daily"
+  }
+}

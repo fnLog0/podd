@@ -1,0 +1,24 @@
+meta {
+  name: Create Sleep Log
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/tracking/sleep/log
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "hours_slept": 7.5,
+    "sleep_quality": "good",
+    "bedtime": "2024-02-15T23:00:00Z",
+    "wakeup_time": "2024-02-16T06:30:00Z"
+  }
+}

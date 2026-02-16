@@ -1,0 +1,15 @@
+meta {
+  name: Get Emergency Contacts
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/emergency-contacts
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

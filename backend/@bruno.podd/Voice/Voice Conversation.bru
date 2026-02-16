@@ -1,0 +1,19 @@
+meta {
+  name: Voice Conversation
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/voice/conversation
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:multipartForm {
+  file: {{audio_file}}
+}

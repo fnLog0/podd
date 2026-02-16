@@ -1,0 +1,15 @@
+meta {
+  name: Get Alarms
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/alarms
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

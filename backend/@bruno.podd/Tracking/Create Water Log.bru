@@ -1,0 +1,22 @@
+meta {
+  name: Create Water Log
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/tracking/water/log
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "amount_ml": 250,
+    "logged_at": "2024-02-16T10:00:00Z"
+  }
+}

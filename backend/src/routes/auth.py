@@ -29,7 +29,9 @@ def _token_hash(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
 
-async def _store_refresh_token(db: AsyncSession, user_id: str, refresh_token: str) -> None:
+async def _store_refresh_token(
+    db: AsyncSession, user_id: str, refresh_token: str
+) -> None:
     payload = decode_token(refresh_token)
     if payload and "exp" in payload:
         expires_at = datetime.fromtimestamp(payload["exp"])
@@ -45,22 +47,32 @@ async def _store_refresh_token(db: AsyncSession, user_id: str, refresh_token: st
 
 
 async def _revoke_refresh_token(db: AsyncSession, refresh_token: str) -> None:
-    await db.execute(delete(RefreshToken).where(RefreshToken.token_hash == _token_hash(refresh_token)))
+    await db.execute(
+        delete(RefreshToken).where(
+            RefreshToken.token_hash == _token_hash(refresh_token)
+        )
+    )
     await db.commit()
 
 
 async def _is_refresh_token_valid(db: AsyncSession, refresh_token: str) -> bool:
     result = await db.execute(
-        select(RefreshToken).where(RefreshToken.token_hash == _token_hash(refresh_token))
+        select(RefreshToken).where(
+            RefreshToken.token_hash == _token_hash(refresh_token)
+        )
     )
     return result.scalar_one_or_none() is not None
 
 
-@router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED
+)
 async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == body.email))
     if result.scalar_one_or_none() is not None:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Email already registered"
+        )
 
     user = User(
         id=str(uuid.uuid4()),
@@ -68,7 +80,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
         password_hash=pwd_context.hash(body.password),
         name=body.name,
     )
-    db.add(user)
+     db.add(user)
     await db.commit()
     await db.refresh(user)
 
@@ -88,7 +100,9 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
     user = result.scalar_one_or_none()
 
     if user is None or not pwd_context.verify(body.password, user.password_hash):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+        )
 
     access_token = create_access_token(str(user.id))
     refresh_token = create_refresh_token(str(user.id))
@@ -110,16 +124,22 @@ async def logout(body: LogoutRequest, db: AsyncSession = Depends(get_db)):
 async def refresh(body: RefreshRequest, db: AsyncSession = Depends(get_db)):
     payload = decode_token(body.refresh_token)
     if payload is None or payload.get("type") != "refresh":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+        )
 
     if not await _is_refresh_token_valid(db, body.refresh_token):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token revoked")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token revoked"
+        )
 
     user_id = payload.get("sub")
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
+        )
 
     await _revoke_refresh_token(db, body.refresh_token)
 

@@ -65,4 +65,7 @@ curl -X POST http://localhost:8000/api/auth/refresh \
 curl -X POST http://localhost:8000/api/auth/logout \
   -H "Content-Type: application/json" \
   -d '{"refresh_token":"<refresh_token>"}'
+
 ```
+locusgraph-client
+pip install git+https://github.com/locusgraph/bindings.git@v0.1.1#subdirectory=python

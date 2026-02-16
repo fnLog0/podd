@@ -1,0 +1,15 @@
+meta {
+  name: Delete Alarm
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/alarms/{{alarm_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

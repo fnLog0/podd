@@ -1,0 +1,23 @@
+meta {
+  name: Create Emergency Contact
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/emergency-contacts
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "name": "John Doe",
+    "phone": "+1234567890",
+    "relationship": "spouse"
+  }
+}

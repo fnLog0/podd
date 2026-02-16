@@ -1,0 +1,12 @@
+meta {
+  name: Voice WebSocket
+  type: ws
+  seq: 4
+}
+
+connect {
+  url: {{baseUrl}}/api/voice/ws
+  headers: {
+    Authorization: Bearer {{accessToken}}
+  }
+}

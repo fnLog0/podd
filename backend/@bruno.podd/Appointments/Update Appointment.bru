@@ -1,0 +1,24 @@
+meta {
+  name: Update Appointment
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/api/appointments/{{appointment_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "title": "Updated Doctor Appointment",
+    "date": "2024-03-20",
+    "time": "11:00",
+    "notes": "Updated notes"
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Get Exercise History
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/tracking/exercise/history
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

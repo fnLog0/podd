@@ -1,0 +1,23 @@
+meta {
+  name: Update Alarm
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/api/alarms/{{alarm_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "time": "09:00",
+    "label": "Updated alarm",
+    "repeat": "daily"
+  }
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Create Medication Schedule
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/medication/schedule
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "medication_name": "Aspirin",
+    "dosage": "100mg",
+    "frequency": "daily",
+    "times": ["08:00", "20:00"],
+    "start_date": "2024-02-16",
+    "notes": "Take with meals"
+  }
+}
