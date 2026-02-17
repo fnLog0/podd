@@ -1,12 +1,14 @@
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    password: str
+    # Only one restriction: min 4 characters.
+    # max_length=72 is added to prevent the Bcrypt 500 error.
+    password: str = Field(min_length=4, max_length=72)
     name: str
 
 

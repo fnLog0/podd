@@ -3,9 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# Standard imports using the 'src' prefix
 from src.config import settings
 from src.database import create_tables
-from src.models import RefreshToken, User  # noqa: F401 - register models for create_all
+from src.models import RefreshToken, User
 from src.routes import (
     alarms,
     appointments,
@@ -23,6 +24,7 @@ from src.routes import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # This runs when the server starts and creates the DB tables
     await create_tables()
     yield
 
@@ -37,6 +39,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# API Routes
 app.include_router(auth.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
 app.include_router(voice.router, prefix="/api")

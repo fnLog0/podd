@@ -7,7 +7,7 @@ from src.config import settings
 
 
 def create_access_token(subject: str) -> str:
-    expire = datetime.now(UTC) + timedelta(minutes=settings.JWT_EXPIRATION_MINUTES)
+    expire = datetime.now(UTC) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return jwt.encode(
         {"sub": subject, "exp": expire, "type": "access", "jti": str(uuid.uuid4())},
         settings.JWT_SECRET,
@@ -16,7 +16,7 @@ def create_access_token(subject: str) -> str:
 
 
 def create_refresh_token(subject: str) -> str:
-    expire = datetime.now(UTC) + timedelta(days=settings.JWT_REFRESH_EXPIRATION_DAYS)
+    expire = datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
     return jwt.encode(
         {"sub": subject, "exp": expire, "type": "refresh", "jti": str(uuid.uuid4())},
         settings.JWT_SECRET,
