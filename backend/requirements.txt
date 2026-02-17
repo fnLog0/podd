@@ -8,7 +8,7 @@ anthropic==0.75.0
 anyio==4.12.0
 async-timeout==5.0.1
 attrs==25.4.0
-backports.asyncio.runner==1.2.0
+# backports.asyncio.runner==1.2.0
 black==25.11.0
 boto3==1.42.4
 botocore==1.42.4
@@ -23,7 +23,7 @@ exceptiongroup==1.2.2
 fastapi==0.122.0
 flake8==7.3.0
 frozenlist==1.8.0
-gevent==22.10.2
+gevent==24.2.1
 h11==0.16.0
 httpcore==1.0.9
 httptools==0.7.1
@@ -47,14 +47,14 @@ langsmith==0.4.37
 mccabe==0.7.0
 multidict==6.7.0
 mypy_extensions==1.1.0
-numpy==1.24.1
+numpy>=1.26.0
 openai==2.8.1
 openpyxl==3.0.10
 orjson==3.11.5
 ormsgpack==1.11.0
 packaging==25.0
 pandas==2.3.3
-pandas-stubs==1.5.2.221213
+pandas-stubs>=2.1.4.231218
 pathspec==0.12.1
 pip-init==0.3.0
 platformdirs==4.4.0

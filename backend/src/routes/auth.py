@@ -80,7 +80,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
         password_hash=pwd_context.hash(body.password),
         name=body.name,
     )
-     db.add(user)
+    db.add(user)
     await db.commit()
     await db.refresh(user)
 
