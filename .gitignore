@@ -26,6 +26,7 @@ wheels/
 venv/
 ENV/
 env/
+podd_env/
 
 # IDE
 .idea/

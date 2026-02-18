@@ -6,20 +6,20 @@
 
 ---
 
-## Phase 1: Project Setup & Auth (Days 1–3)
+## Phase 1: Project Setup & Auth (Days 1–3) ✓ COMPLETED
 
-- [ ] Set up Python virtual env (`python -m venv .venv`), create `requirements.txt` with FastAPI, uvicorn, SQLAlchemy, aiosqlite, python-jose, passlib, pydantic
-- [ ] SQLite auto-creates on startup (`podd_auth.db`), create `.env` with `JWT_SECRET`, LocusGraph API key, etc.
-- [ ] SQLite tables created automatically via SQLAlchemy `create_all()` on app startup
-- [ ] Create `User` model (id, email, hashed_password, name, created_at, updated_at) — SQLite only
-- [ ] Implement auth endpoints:
-  - [ ] `POST /api/auth/register` — create user, return tokens
-  - [ ] `POST /api/auth/login` — validate credentials, return access + refresh tokens
-  - [ ] `POST /api/auth/logout` — invalidate refresh token
-  - [ ] `POST /api/auth/refresh` — issue new access token from refresh token
-  - [ ] `GET /api/auth/me` — return current user from JWT
-- [ ] Test all auth endpoints with curl / Postman
-- [ ] Add JWT middleware (`Depends(get_current_user)`) to protect all non-auth routes
+- [x] Set up Python virtual env (`python -m venv .venv`), create `requirements.txt` with FastAPI, uvicorn, SQLAlchemy, aiosqlite, python-jose, passlib, pydantic
+- [x] SQLite auto-creates on startup (`podd_auth.db`), create `.env` with `JWT_SECRET`, LocusGraph API key, etc.
+- [x] SQLite tables created automatically via SQLAlchemy `create_all()` on app startup
+- [x] Create `User` model (id, email, hashed_password, name, created_at, updated_at) — SQLite only
+- [x] Implement auth endpoints:
+  - [x] `POST /api/auth/register` — create user, return tokens
+  - [x] `POST /api/auth/login` — validate credentials, return access + refresh tokens
+  - [x] `POST /api/auth/logout` — invalidate refresh token
+  - [x] `POST /api/auth/refresh` — issue new access token from refresh token
+  - [x] `GET /api/auth/me` — return current user from JWT
+- [x] Test all auth endpoints with curl / Postman
+- [x] Add JWT middleware (`Depends(get_current_user)`) to protect all non-auth routes
 
 ---
 
