@@ -17,7 +17,6 @@ from src.routes import (
     medication,
     meditation,
     profile,
-    tracking,
     voice,
 )
 
@@ -44,9 +43,12 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
 app.include_router(voice.router, prefix="/api")
 app.include_router(profile.router, prefix="/api")
-app.include_router(health.router, prefix="/api")
-app.include_router(medication.router, prefix="/api")
-app.include_router(tracking.router, prefix="/api")
+app.include_router(health.health_router, prefix="/api")
+app.include_router(medication.medication_router, prefix="/api")
+app.include_router(medication.medication_schedule_router, prefix="/api")
+app.include_router(health.food_log_router, prefix="/api")
+app.include_router(health.vitals_router, prefix="/api")
+app.include_router(health.tracking_router, prefix="/api")
 app.include_router(meditation.router, prefix="/api")
 app.include_router(alarms.router, prefix="/api")
 app.include_router(appointments.router, prefix="/api")

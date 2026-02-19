@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./podd_auth.db"
-    LOCUSGRAPH_API_KEY: str = ""
+    LOCUSGRAPH_SERVER_URL: str = "https://api-dev.locusgraph.com/mcp"
+    LOCUSGRAPH_AGENT_SECRET: str = ""
     LOCUSGRAPH_GRAPH_ID: str = "podd_health"
     OPENAI_API_KEY: str = ""
     SARVAM_API_KEY: str = ""
