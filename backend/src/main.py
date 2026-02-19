@@ -3,9 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# Standard imports using the 'src' prefix
 from src.config import settings
 from src.database import create_tables
-from src.models import RefreshToken, User  # noqa: F401 - register models for create_all
+from src.models import RefreshToken, User
 from src.routes import (
     alarms,
     appointments,
@@ -16,13 +17,13 @@ from src.routes import (
     medication,
     meditation,
     profile,
-    tracking,
     voice,
 )
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # This runs when the server starts and creates the DB tables
     await create_tables()
     yield
 
@@ -37,13 +38,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# API Routes
 app.include_router(auth.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
 app.include_router(voice.router, prefix="/api")
 app.include_router(profile.router, prefix="/api")
-app.include_router(health.router, prefix="/api")
-app.include_router(medication.router, prefix="/api")
-app.include_router(tracking.router, prefix="/api")
+app.include_router(health.health_router, prefix="/api")
+app.include_router(medication.medication_router, prefix="/api")
+app.include_router(medication.medication_schedule_router, prefix="/api")
+app.include_router(health.food_log_router, prefix="/api")
+app.include_router(health.vitals_router, prefix="/api")
+app.include_router(health.tracking_router, prefix="/api")
 app.include_router(meditation.router, prefix="/api")
 app.include_router(alarms.router, prefix="/api")
 app.include_router(appointments.router, prefix="/api")

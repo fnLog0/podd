@@ -4,7 +4,7 @@ from src.services.locusgraph_service import locusgraph_service
 from src.workflows.state import PoddState
 
 
-def store_events(state: PoddState) -> dict:
+async def store_events(state: PoddState) -> dict:
     pending = list(state.get("pending_events", []))
     user_id = state.get("user_id", "")
 
@@ -24,7 +24,7 @@ def store_events(state: PoddState) -> dict:
     })
 
     for event in pending:
-        locusgraph_service.store_event(
+        await locusgraph_service.store_event(
             event_kind=event["event_kind"],
             payload=event["payload"],
             context_id=event.get("context_id"),

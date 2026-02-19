@@ -16,14 +16,17 @@ auth:bearer {
 
 body:json {
   {
+    "description": "Oatmeal with banana",
+    "calories": 150,
+    "protein_g": 4,
+    "carbs_g": 27,
+    "fat_g": 3,
     "meal_type": "breakfast",
-    "items": [
-      {
-        "name": "Oatmeal",
-        "calories": 150
-      }
-    ],
-    "total_calories": 150,
     "logged_at": "2024-02-16T08:00:00Z"
   }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMWI5NjI3Ni1kOWNmLTRlNzktOGU4Zi1lOGY1MGIzMDEzODIiLCJleHAiOjE3NzE1MjYxMTAsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiJiNzcyOTVlYS05NmNkLTRjOGQtYjhiMi0zNjY1NTc5ZjY1OWUifQ.cBl0E4fGundpmK7F-X-_pcmeKbYskHDWS989abXDA8I
 }
