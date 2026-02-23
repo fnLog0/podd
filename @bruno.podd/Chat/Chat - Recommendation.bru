@@ -1,0 +1,27 @@
+meta {
+  name: Chat - Recommendation
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "message": "What should I eat for breakfast?",
+    "locale": "en-IN",
+    "channel": "text"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+}

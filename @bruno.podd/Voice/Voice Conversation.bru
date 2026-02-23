@@ -1,0 +1,65 @@
+meta {
+  name: Voice Conversation
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/voice/conversation?locale=hi-IN&stt_language=unknown&tts_speaker=Meera
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:multipartForm {
+  file: {{audio_file}}
+}
+
+docs {
+  description: Full round-trip voice conversation - transcribes audio, processes through LangGraph workflow, and returns TTS audio
+
+  params: [
+    {
+      name: locale
+      type: string
+      required: false
+      default: hi-IN
+      description: Target language for TTS response
+    },
+    {
+      name: stt_language
+      type: string
+      required: false
+      default: unknown
+      description: Source language for STT (unknown for auto-detect)
+    },
+    {
+      name: tts_speaker
+      type: string
+      required: false
+      default: Meera
+      description: Speaker voice for TTS response
+    }
+  ]
+
+  flow: [
+    1. Audio input
+    2. STT transcription
+    3. LangGraph workflow processing
+    4. TTS audio generation
+    5. Return audio response
+  ]
+
+  response: audio/wav
+
+  headers: [
+    X-Transcript
+    X-Response-Text
+    X-Intent
+    X-Language-Code
+    X-Speaker
+  ]
+}

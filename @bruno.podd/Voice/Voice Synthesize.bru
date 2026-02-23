@@ -1,0 +1,100 @@
+meta {
+  name: Voice Synthesize
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/voice/synthesize
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "text": "Hello, this is a test message",
+    "language_code": "hi-IN",
+    "speaker": "Meera",
+    "pitch": 0.0,
+    "pace": 1.0,
+    "loudness": 1.0,
+    "sample_rate": 22050
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOTMxYjIzZS0zZjg3LTQ2NDUtOGNhMS03MmMxMzYxNmFlYjQiLCJleHAiOjE3NzE4NTc5MjAsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiIwMjY1M2QyNy0wNjhkLTQ4N2EtOWJiZC1kZjk2MTZlODVjMTQifQ.ei90ejpQd4-APA0az3hbmykRLhCKmOhxb8LPN96nZ_k
+}
+
+docs {
+  description: Converts text to speech using Sarvam AI TTS
+  
+  params: [
+    {
+      name: text
+      type: string
+      required: true
+      description: Text to convert to speech
+    },
+    {
+      name: language_code
+      type: string
+      required: false
+      default: hi-IN
+      description: Target language code (hi-IN, en-IN, etc.)
+    },
+    {
+      name: speaker
+      type: string
+      required: false
+      default: Meera
+      description: Speaker voice name (Meera, Diya, Maya, etc.)
+    },
+    {
+      name: pitch
+      type: float
+      required: false
+      default: 0.0
+      min: -0.75
+      max: 0.75
+      description: Voice pitch (-0.75 to 0.75)
+    },
+    {
+      name: pace
+      type: float
+      required: false
+      default: 1.0
+      min: 0.5
+      max: 2.0
+      description: Speech speed (0.5 to 2.0)
+    },
+    {
+      name: loudness
+      type: float
+      required: false
+      default: 1.0
+      min: 0.3
+      max: 3.0
+      description: Audio loudness (0.3 to 3.0)
+    },
+    {
+      name: sample_rate
+      type: integer
+      required: false
+      default: 22050
+      description: Sample rate in Hz (8000, 16000, 22050, 24000)
+    }
+  ]
+  
+  response: audio/wav
+  
+  headers: [
+    X-Language-Code
+    X-Speaker
+  ]
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Chat - Hindi Language Support
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "message": "Maine aaj khana khaya",
+    "locale": "hi-IN",
+    "channel": "text"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+}

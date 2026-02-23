@@ -1,0 +1,27 @@
+meta {
+  name: Chat - Medication Tracking
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "message": "I took my medicine today",
+    "locale": "en-IN",
+    "channel": "text"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+}

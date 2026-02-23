@@ -1,0 +1,28 @@
+meta {
+  name: Create Medication Schedule
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/medication/schedule
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "medication_name": "Aspirin",
+    "time_of_day": "08:00",
+    "days_of_week": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzQ5NGUzOC04ZDY4LTQ5NmQtYjQxNy02YTdjY2E4YjQ5OGYiLCJleHAiOjE3NzE3Nzc1OTEsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiIxMTgyYTZlNC00YTE5LTRjOWEtYWY3NC0xYTBhOWQ5OTIyYzIifQ.tRqu_Nj_x6eq6d7DPArk-A3lXDG89yWO52FDuaPBIhw
+}

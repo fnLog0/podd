@@ -1,0 +1,27 @@
+meta {
+  name: Create Water Log
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/tracking/water/log
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "amount_ml": 250,
+    "logged_at": "2024-02-16T10:00:00Z"
+  }
+}
+
+vars:pre-request {
+  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOTMxYjIzZS0zZjg3LTQ2NDUtOGNhMS03MmMxMzYxNmFlYjQiLCJleHAiOjE3NzE4NTc5MjAsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiIwMjY1M2QyNy0wNjhkLTQ4N2EtOWJiZC1kZjk2MTZlODVjMTQifQ.ei90ejpQd4-APA0az3hbmykRLhCKmOhxb8LPN96nZ_k
+  baseUrl: http://127.0.0.1:8000
+}

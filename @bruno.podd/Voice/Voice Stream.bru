@@ -1,0 +1,59 @@
+meta {
+  name: Voice Stream
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/voice/stream?language_code=unknown&model=saarika:v2&with_translation=false
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:multipartForm {
+  file: {{audio_file}}
+}
+
+vars:pre-request {
+  @language_code = "unknown"
+  @model = "saarika:v2"
+  @with_translation = "false"
+}
+
+docs {
+  description: Transcribes audio to text using Sarvam AI STT
+
+  params: [
+    {
+      name: language_code
+      type: string
+      required: false
+      default: unknown
+      description: Language code (e.g., hi-IN, en-IN, unknown for auto-detect)
+    },
+    {
+      name: model
+      type: string
+      required: false
+      default: saarika:v2
+      description: STT model (saarika:v1, saarika:v2)
+    },
+    {
+      name: with_translation
+      type: boolean
+      required: false
+      default: false
+      description: Translate transcript to English
+    }
+  ]
+
+  response: {
+    transcript: string
+    language_code: string
+    confidence: float
+  }
+}

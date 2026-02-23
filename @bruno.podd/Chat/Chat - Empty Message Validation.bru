@@ -1,0 +1,27 @@
+meta {
+  name: Chat - Empty Message Validation
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "message": "",
+    "locale": "en-IN",
+    "channel": "text"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+}

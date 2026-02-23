@@ -1,0 +1,20 @@
+meta {
+  name: Get Current User
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOTMxYjIzZS0zZjg3LTQ2NDUtOGNhMS03MmMxMzYxNmFlYjQiLCJleHAiOjE3NzE4NTc5MjAsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiIwMjY1M2QyNy0wNjhkLTQ4N2EtOWJiZC1kZjk2MTZlODVjMTQifQ.ei90ejpQd4-APA0az3hbmykRLhCKmOhxb8LPN96nZ_k
+}

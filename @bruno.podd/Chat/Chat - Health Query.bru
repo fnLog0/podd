@@ -1,0 +1,27 @@
+meta {
+  name: Chat - Health Query
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "message": "What is my blood pressure?",
+    "locale": "en-IN",
+    "channel": "text"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+}

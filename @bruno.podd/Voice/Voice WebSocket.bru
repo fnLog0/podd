@@ -1,0 +1,91 @@
+meta {
+  name: Voice WebSocket
+  type: ws
+  seq: 4
+}
+
+connect {
+  url: {{baseUrl}}/api/voice/ws
+  headers: {
+    Authorization: Bearer {{accessToken}}
+  }
+}
+
+docs {
+  description: Real-time bidirectional audio streaming WebSocket for voice conversations
+
+  message_types: [
+    {
+      type: binary
+      direction: client_to_server
+      description: Audio chunks to transcribe
+    },
+    {
+      type: json
+      direction: client_to_server
+      message: {
+        "type": "auth",
+        "user_id": "user123"
+      }
+      description: Authenticate user
+    },
+    {
+      type: json
+      direction: client_to_server
+      message: {
+        "type": "interrupt"
+      }
+      description: Interrupt current audio playback
+    },
+    {
+      type: json
+      direction: client_to_server
+      message: {
+        "type": "text_input",
+        "text": "Hello, how are you?"
+      }
+      description: Send text input directly
+    },
+    {
+      type: json
+      direction: server_to_client
+      message: {
+        "type": "transcript",
+        "transcript": "नमस्ते",
+        "language_code": "hi-IN"
+      }
+      description: Transcribed text
+    },
+    {
+      type: binary
+      direction: server_to_client
+      description: TTS audio response
+    },
+    {
+      type: json
+      direction: server_to_client
+      message: {
+        "type": "audio_complete",
+        "text": "Hello! How can I help you?"
+      }
+      description: Audio stream complete with response text
+    },
+    {
+      type: json
+      direction: server_to_client
+      message: {
+        "type": "error",
+        "message": "Error description"
+      }
+      description: Error message
+    }
+  ]
+
+  features: [
+    Real-time bidirectional audio streaming
+    Auto language detection
+    Interruption handling
+    Text input support
+    User authentication
+  ]
+}
