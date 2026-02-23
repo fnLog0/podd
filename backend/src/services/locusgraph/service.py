@@ -1,3 +1,13 @@
+"""LocusGraph service: store/retrieve events and generate insights.
+
+LocusGraph behavior (from LocusGraph creator):
+- If you store_event with a context_id that already exists, the second call
+  overwrites the payload of the first event. Use store_event with the same
+  context_id and new payload as the way to "update whole payload".
+
+Use this for static/singleton data: profile (one per user), cache entries,
+and any entity where you want a single up-to-date record per context_id.
+"""
 import asyncio
 import json
 import uuid
@@ -50,6 +60,13 @@ class LocusGraphService:
         contradicts: list[str] | None = None,
         timestamp: str | None = None,
     ) -> dict:
+        """Store an event in LocusGraph (or update if context_id already exists).
+
+        If context_id is given and an event with that context_id already exists,
+        LocusGraph overwrites the existing event's payload with this payload.
+        So calling store_event again with the same context_id is the way to
+        update the whole payload.
+        """
         if self.use_mock:
             event_id = self.new_id()
             event = {
@@ -67,6 +84,20 @@ class LocusGraphService:
                 "relevance": None,
                 "error_message": None,
             }
+            # LocusGraph: same context_id = overwrite existing event payload
+            if context_id:
+                for i, existing in enumerate(self._mock_events):
+                    if existing.get("context_id") == context_id:
+                        self._mock_events[i] = {**existing, **event}
+                        print(
+                            f"DEBUG MOCK: Updated event context_id={context_id} (overwrite payload)"
+                        )
+                        return {
+                            "event_id": existing.get("event_id", event_id),
+                            "status": "stored",
+                            "relevance": None,
+                            "error_message": None,
+                        }
             self._mock_events.append(event)
             print(
                 f"DEBUG MOCK: Stored event with event_id={event_id}, event_kind={event_kind}, context_id={context_id}"
