@@ -1,5 +1,10 @@
+from pathlib import Path
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Backend project root (backend/)
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 class Settings(BaseSettings):
@@ -13,9 +18,9 @@ class Settings(BaseSettings):
         ]
     )
 
-    # Database settings
+    # Database settings (default: SQLite in backend directory)
     DATABASE_URL: str = Field(
-        default="sqlite+aiosqlite:///./podd_auth.db"
+        default=f"sqlite+aiosqlite:///{_BACKEND_DIR / 'podd_auth.db'}"
     )
 
     # JWT settings
