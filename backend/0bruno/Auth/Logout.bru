@@ -1,0 +1,22 @@
+meta {
+  name: Logout
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/auth/logout
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refresh_token": "{{refreshToken}}"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzQ5NGUzOC04ZDY4LTQ5NmQtYjQxNy02YTdjY2E4YjQ5OGYiLCJleHAiOjE3NzE3Nzc1NTgsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiI3ZTY2ZTY3Yi1kNTBmLTRhMDQtYTZjZS02YWY2NDdhYTkyZjQifQ.8ZVH4ZbDZIu87qzR-67qgYObgbDMqLxQq9KJabvR9RQ
+}

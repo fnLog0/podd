@@ -1,0 +1,22 @@
+meta {
+  name: Voice Synthesize
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/voice/synthesize
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "text": "Hello, this is a test message",
+    "voice": "default"
+  }
+}

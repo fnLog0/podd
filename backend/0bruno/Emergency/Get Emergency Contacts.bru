@@ -1,0 +1,19 @@
+meta {
+  name: Get Emergency Contacts
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/emergency-contacts
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+}

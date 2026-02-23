@@ -1,0 +1,22 @@
+meta {
+  name: Refresh Token
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/auth/refresh
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refresh_token": "{{refreshToken}}"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMWI5NjI3Ni1kOWNmLTRlNzktOGU4Zi1lOGY1MGIzMDEzODIiLCJleHAiOjE3NzIyMDcxNTUsInR5cGUiOiJyZWZyZXNoIiwianRpIjoiODM5YWViYmUtZjkxMC00ZWMyLTk5YjYtMmRhMjVlN2M4YWYzIn0.qTTD5Y1LVD6Su9Rd2TZGJKzAByouNU1kbtVuTDR2oAY
+}
