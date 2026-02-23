@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     # JWT settings
     JWT_SECRET: str = Field(default="change-me-in-production")
     JWT_ALGORITHM: str = Field(default="HS256")
-    JWT_EXPIRATION_MINUTES: int = Field(default=60)
+    JWT_EXPIRATION_MINUTES: int = Field(default=1440)  # 24 hours for development
     JWT_REFRESH_EXPIRATION_DAYS: int = Field(default=7)
 
     # LocusGraph settings

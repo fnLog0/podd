@@ -16,12 +16,9 @@ headers {
 
 body:json {
   {
-    "email": "sajjilakhtar@gmail.com",
-    "password": "aii&&123",
-    "name": "saz"
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "name": "{{name}}"
   }
 }
 
-vars:pre-request {
-  baseUrl: http://127.0.0.1:8000
-}

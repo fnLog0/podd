@@ -2,8 +2,8 @@ import hashlib
 import uuid
 from datetime import datetime, timezone
 
+import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, status
-from passlib.context import CryptContext
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,7 +22,23 @@ from src.schemas.auth import (
 )
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# Bcrypt has a 72-byte limit
+BCRYPT_MAX_PASSWORD_BYTES = 72
+
+
+def _password_bytes(password: str) -> bytes:
+    """Encode password for bcrypt, truncating to 72 bytes if needed."""
+    encoded = password.encode("utf-8")
+    return encoded[:BCRYPT_MAX_PASSWORD_BYTES] if len(encoded) > BCRYPT_MAX_PASSWORD_BYTES else encoded
+
+
+def _hash_password(password: str) -> str:
+    return bcrypt.hashpw(_password_bytes(password), bcrypt.gensalt()).decode("utf-8")
+
+
+def _verify_password(password: str, password_hash: str) -> bool:
+    return bcrypt.checkpw(_password_bytes(password), password_hash.encode("utf-8"))
 
 
 def _token_hash(token: str) -> str:
@@ -77,7 +93,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
     user = User(
         id=str(uuid.uuid4()),
         email=body.email,
-        password_hash=pwd_context.hash(body.password),
+        password_hash=_hash_password(body.password),
         name=body.name,
     )
     # FIXED INDENTATION BELOW
@@ -100,7 +116,7 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == body.email))
     user = result.scalar_one_or_none()
 
-    if user is None or not pwd_context.verify(body.password, user.password_hash):
+    if user is None or not _verify_password(body.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )

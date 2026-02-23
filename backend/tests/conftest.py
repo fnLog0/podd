@@ -165,11 +165,9 @@ async def db_session():
 @pytest_asyncio.fixture
 async def test_user(db_session: AsyncSession):
     """Create a test user for authentication tests."""
-    from passlib.context import CryptContext
+    import bcrypt
 
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    password_hash = pwd_context.hash("testpass123")
-
+    password_hash = bcrypt.hashpw(b"testpass123", bcrypt.gensalt()).decode("utf-8")
     user = User(
         id=str(uuid_lib.uuid4()),
         email="test@example.com",
