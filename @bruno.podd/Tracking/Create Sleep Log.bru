@@ -1,0 +1,29 @@
+meta {
+  name: Create Sleep Log
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/tracking/sleep/log
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "sleep_start": "2024-02-15T23:00:00Z",
+    "sleep_end": "2024-02-16T06:30:00Z",
+    "quality": "good",
+    "notes": "Slept well"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://127.0.0.1:8000
+  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOTMxYjIzZS0zZjg3LTQ2NDUtOGNhMS03MmMxMzYxNmFlYjQiLCJleHAiOjE3NzE4NTc5MjAsInR5cGUiOiJhY2Nlc3MiLCJqdGkiOiIwMjY1M2QyNy0wNjhkLTQ4N2EtOWJiZC1kZjk2MTZlODVjMTQifQ.ei90ejpQd4-APA0az3hbmykRLhCKmOhxb8LPN96nZ_k
+}
