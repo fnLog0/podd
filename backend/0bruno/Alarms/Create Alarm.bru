@@ -16,9 +16,12 @@ auth:bearer {
 
 body:json {
   {
+    "type": "medication",
+    "title": "Morning medication",
+    "message": "Time to take your morning medication",
     "time": "08:00",
-    "label": "Morning medication",
-    "repeat": "daily"
+    "days_of_week": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+    "active": true
   }
 }
 

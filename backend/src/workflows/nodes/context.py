@@ -8,11 +8,11 @@ def build_context_query(state: PoddState) -> dict:
     return {"context_query": f"{text} person:{user_id}"}
 
 
-def retrieve_locus_context(state: PoddState) -> dict:
+async def retrieve_locus_context(state: PoddState) -> dict:
     query = state.get("context_query", "")
     user_id = state.get("user_id", "")
 
-    results = locusgraph_service.retrieve_context(
+    results = await locusgraph_service.retrieve_context(
         query=query,
         limit=5,
         context_ids=[f"person:{user_id}"],

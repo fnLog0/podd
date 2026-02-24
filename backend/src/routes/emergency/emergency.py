@@ -156,7 +156,7 @@ async def create_emergency_contact(
 
     now = datetime.now(timezone.utc)
     return EmergencyContactResponse(
-        id=stored.get("event_id", contact_id),
+        id=contact_id,
         user_id=str(current_user.id),
         name=contact_data.name,
         relationship=contact_data.relationship,

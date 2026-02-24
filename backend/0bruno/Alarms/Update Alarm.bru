@@ -16,9 +16,11 @@ auth:bearer {
 
 body:json {
   {
+    "title": "Updated alarm",
+    "message": "Updated reminder message",
     "time": "09:00",
-    "label": "Updated alarm",
-    "repeat": "daily"
+    "days_of_week": ["mon", "tue", "wed", "thu", "fri"],
+    "active": true
   }
 }
 

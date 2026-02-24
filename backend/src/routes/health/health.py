@@ -88,6 +88,11 @@ async def get_food_logs(
                 if logged_at.date() != date:
                     continue
 
+            meal_type = payload.get("meal_type", "other")
+            valid_meal_types = ["breakfast", "lunch", "dinner", "snack", "other"]
+            if meal_type not in valid_meal_types:
+                meal_type = "other"
+
             food_logs.append(
                 FoodLogResponse(
                     id=memory.get("id", ""),
@@ -97,7 +102,7 @@ async def get_food_logs(
                     protein_g=payload.get("protein_g"),
                     carbs_g=payload.get("carbs_g"),
                     fat_g=payload.get("fat_g"),
-                    meal_type=payload.get("meal_type", ""),
+                    meal_type=meal_type,
                     logged_at=safe_parse_datetime(
                         payload.get("logged_at"),
                         memory.get("timestamp")

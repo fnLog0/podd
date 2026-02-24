@@ -235,7 +235,7 @@ async def create_meditation_log(
 
     now = datetime.now(timezone.utc)
     return MeditationLogResponse(
-        id=stored.get("event_id", log_id),
+        id=log_id,
         user_id=str(current_user.id),
         session_id=log_data.session_id,
         duration_minutes=log_data.duration_minutes,

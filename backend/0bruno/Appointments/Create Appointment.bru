@@ -17,8 +17,10 @@ auth:bearer {
 body:json {
   {
     "title": "Doctor Appointment",
-    "date": "2024-03-15",
-    "time": "10:30",
-    "notes": "Regular checkup"
+    "scheduled_at": "2024-03-15T10:30:00Z",
+    "doctor_name": "Dr. Smith",
+    "location": "City Hospital",
+    "notes": "Regular checkup",
+    "reminder_minutes_before": 30
   }
 }

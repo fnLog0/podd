@@ -163,7 +163,7 @@ async def log_medication(
             pass
 
     return MedicationLogResponse(
-        id=stored.get("event_id", log_id),
+        id=log_id,
         user_id=str(current_user.id),
         medication_id=medication_id,
         medication_name=medication_name,
