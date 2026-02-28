@@ -1,11 +1,31 @@
+from langchain_core.messages import SystemMessage, HumanMessage
+
 from src.services.locusgraph.service import locusgraph_service
 from src.workflows.state import PoddState
+from src.workflows.llm import llm, SYSTEM_BASE, _format_memories
+
+SYSTEM_PROMPT = (
+    f"{SYSTEM_BASE}\n\n"
+    "The user is logging food intake. "
+    "Acknowledge what they ate, provide a brief nutritional note if relevant, "
+    "and confirm the entry was recorded. "
+    "If the description is vague, ask a short clarifying question."
+)
 
 
-def agent_food_tracking(state: PoddState) -> dict:
+async def agent_food_tracking(state: PoddState) -> dict:
     user_id = state.get("user_id", "")
     user_text = state.get("user_text", "")
+    lg_context = state.get("lg_context", {})
+    memories = lg_context.get("memories", [])
     record_id = locusgraph_service.new_id()
+
+    context_block = _format_memories(memories)
+    messages = [
+        SystemMessage(content=f"{SYSTEM_PROMPT}\n\nUser context:\n{context_block}"),
+        HumanMessage(content=user_text),
+    ]
+    response = await llm.ainvoke(messages)
 
     pending = list(state.get("pending_events", []))
     pending.append(
@@ -26,6 +46,6 @@ def agent_food_tracking(state: PoddState) -> dict:
 
     return {
         "pending_events": pending,
-        "assistant_text": f"Got it! I've logged your food: {user_text}",
+        "assistant_text": response.content,
         "food_parse": {"raw_text": user_text, "record_id": record_id},
     }

@@ -4,7 +4,7 @@ from langgraph.graph import StateGraph, END
 
 from src.workflows.state import PoddState
 from src.workflows.nodes.normalize import normalize_input
-from src.workflows.nodes.context import build_context_query, retrieve_locus_context
+from src.workflows.nodes.context import retrieve_locus_context
 from src.workflows.nodes.router import router_intent, route_to_agent
 from src.workflows.nodes.agents.food import agent_food_tracking
 from src.workflows.nodes.agents.medication import agent_medication
@@ -17,7 +17,6 @@ from src.workflows.nodes.response import format_response
 builder = StateGraph(PoddState)
 
 builder.add_node("normalize_input", normalize_input)
-builder.add_node("build_context_query", build_context_query)
 builder.add_node("retrieve_locus_context", retrieve_locus_context)
 builder.add_node("router_intent", router_intent)
 builder.add_node("agent_food_tracking", agent_food_tracking)
@@ -30,8 +29,7 @@ builder.add_node("format_response", format_response)
 
 builder.set_entry_point("normalize_input")
 
-builder.add_edge("normalize_input", "build_context_query")
-builder.add_edge("build_context_query", "retrieve_locus_context")
+builder.add_edge("normalize_input", "retrieve_locus_context")
 builder.add_edge("retrieve_locus_context", "router_intent")
 
 builder.add_conditional_edges(

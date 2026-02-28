@@ -1,66 +1,51 @@
-import re
+from langchain_core.messages import SystemMessage, HumanMessage
 
 from src.workflows.state import PoddState, Intent
+from src.workflows.llm import llm
 
-FOOD_KEYWORDS = {
-    "khana",
-    "roti",
-    "chawal",
-    "eaten",
-    "ate",
-    "breakfast",
-    "lunch",
-    "dinner",
-    "food",
-    "meal",
-}
+INTENT_SYSTEM_PROMPT = """\
+You are an intent classifier for a health assistant app called Podd.
 
-MED_KEYWORDS = {
-    "medicine",
-    "dawai",
-    "tablet",
-    "goli",
-    "prescription",
-}
+Given a user message, classify it into exactly ONE of these intents:
+- food_tracking: user is logging, mentioning, or asking about food they ate/will eat
+- medication: user is logging, mentioning, or asking about medicines/tablets/prescriptions
+- health_query: user is asking about health metrics, vitals, symptoms, or diagnosis
+- recommendation: user is asking for suggestions, advice, recipes, or "what should I do/eat"
+- general_chat: greetings, small talk, or anything that doesn't fit the above
 
-HEALTH_KEYWORDS = {
-    "blood pressure",
-    "sugar",
-    "bp",
-    "weight",
-    "symptoms",
-    "diagnosis",
-}
+Respond with ONLY the intent name, nothing else. No punctuation, no explanation.
 
-RECOMMENDATION_KEYWORDS = {
-    "suggest",
-    "recommend",
-    "recipe",
-    "kya khau",
-    "what should i eat",
+Examples:
+- "I ate 2 roti and dal" -> food_tracking
+- "took my BP medicine" -> medication
+- "what is my blood pressure trend" -> health_query
+- "suggest a healthy breakfast" -> recommendation
+- "hello how are you" -> general_chat
+- "maine dawai kha li" -> medication
+- "kya khau aaj" -> recommendation
+- "mera weight kitna hai" -> health_query
+"""
+
+VALID_INTENTS: set[str] = {
+    "food_tracking",
+    "medication",
+    "health_query",
+    "recommendation",
+    "general_chat",
 }
 
 
-def _match_keywords(text: str, keywords: set[str]) -> bool:
-    lower = text.lower()
-    return any(re.search(r"\b" + re.escape(k) + r"\b", lower) for k in keywords)
-
-
-def router_intent(state: PoddState) -> dict:
+async def router_intent(state: PoddState) -> dict:
     text = state.get("user_text", "")
-    intent: Intent
 
-    if _match_keywords(text, RECOMMENDATION_KEYWORDS):
-        intent = "recommendation"
-    elif _match_keywords(text, HEALTH_KEYWORDS):
-        intent = "health_query"
-    elif _match_keywords(text, MED_KEYWORDS):
-        intent = "medication"
-    elif _match_keywords(text, FOOD_KEYWORDS):
-        intent = "food_tracking"
-    else:
-        intent = "general_chat"
+    messages = [
+        SystemMessage(content=INTENT_SYSTEM_PROMPT),
+        HumanMessage(content=text),
+    ]
+    response = await llm.ainvoke(messages)
+    raw = response.content.strip().lower()
 
+    intent: Intent = raw if raw in VALID_INTENTS else "general_chat"
     return {"intent": intent}
 
 

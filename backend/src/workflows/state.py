@@ -15,8 +15,10 @@ class PoddState(TypedDict, total=False):
     locale: str
     channel: Literal["text", "voice"]
     user_text: str
+    normalized_text: str
     intent: Intent
     context_query: str
+    context_ids: list[str]
     lg_context: dict[str, Any]
     pending_events: list[dict[str, Any]]
     assistant_text: str
