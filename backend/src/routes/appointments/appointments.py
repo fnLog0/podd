@@ -65,7 +65,14 @@ async def get_appointments(
         if payload.get("user_id") == str(current_user.id):
             scheduled_at = payload.get("scheduled_at")
             if isinstance(scheduled_at, str):
-                scheduled_at = datetime.fromisoformat(scheduled_at)
+                try:
+                    scheduled_at = datetime.fromisoformat(scheduled_at)
+                except (ValueError, TypeError):
+                    scheduled_at = None
+
+            # Skip appointments with missing scheduled_at
+            if scheduled_at is None:
+                continue
 
             # Apply temporal filter if using non-temporal query
             if query_type == "upcoming" and scheduled_at < now:
@@ -134,11 +141,7 @@ async def create_appointment(
         "title": appointment_data.title,
         "doctor_name": appointment_data.doctor_name,
         "location": appointment_data.location,
-        "scheduled_at": (
-            appointment_data.scheduled_at.isoformat()
-            if hasattr(appointment_data.scheduled_at, "isoformat")
-            else appointment_data.scheduled_at
-        ),
+        "scheduled_at": appointment_data.scheduled_at,
         "notes": appointment_data.notes,
         "reminder_minutes_before": appointment_data.reminder_minutes_before,
         "user_id": str(current_user.id),
@@ -148,11 +151,7 @@ async def create_appointment(
         title=base_payload["title"],
         doctor_name=base_payload["doctor_name"],
         location=base_payload["location"],
-        scheduled_at=(
-            datetime.fromisoformat(base_payload["scheduled_at"])
-            if isinstance(base_payload["scheduled_at"], str)
-            else base_payload["scheduled_at"]
-        ),
+        scheduled_at=appointment_data.scheduled_at,
         notes=base_payload["notes"],
         reminder_minutes_before=base_payload["reminder_minutes_before"],
         user_id=base_payload["user_id"],
@@ -166,19 +165,14 @@ async def create_appointment(
 
     # Schedule reminder if specified
     if appointment_data.reminder_minutes_before:
-        scheduled_at = (
-            datetime.fromisoformat(base_payload["scheduled_at"])
-            if isinstance(base_payload["scheduled_at"], str)
-            else base_payload["scheduled_at"]
-        )
         await TemporalScheduler.schedule_reminder(
             target_entity_type="appointment",
             target_entity_id=appointment_id,
-            trigger_at=scheduled_at,
+            trigger_at=appointment_data.scheduled_at,
             reminder_minutes_before=appointment_data.reminder_minutes_before,
             user_id=str(current_user.id),
             title=f"Appointment: {appointment_data.title}",
-            message=f"You have an appointment with {appointment_data.doctor_name or 'doctor'} at {scheduled_at.strftime('%I:%M %p')}",
+            message=f"You have an appointment with {appointment_data.doctor_name or 'doctor'} at {appointment_data.scheduled_at.strftime('%I:%M %p')}",
         )
 
     # Invalidate cache for this user
@@ -186,12 +180,12 @@ async def create_appointment(
 
     now = datetime.now(timezone.utc)
     return AppointmentResponse(
-        id=stored.get("event_id", appointment_id),
+        id=appointment_id,
         user_id=str(current_user.id),
         title=appointment_data.title,
         doctor_name=appointment_data.doctor_name,
         location=appointment_data.location,
-        scheduled_at=scheduled_at,
+        scheduled_at=appointment_data.scheduled_at,
         notes=appointment_data.notes,
         reminder_minutes_before=appointment_data.reminder_minutes_before,
         created_at=now,
@@ -226,7 +220,10 @@ async def get_appointment(appointment_id: str, current_user=Depends(get_current_
 
     scheduled_at = payload.get("scheduled_at")
     if isinstance(scheduled_at, str):
-        scheduled_at = datetime.fromisoformat(scheduled_at)
+        try:
+            scheduled_at = datetime.fromisoformat(scheduled_at)
+        except (ValueError, TypeError):
+            scheduled_at = None
 
     return AppointmentResponse(
         id=appointment_id,
@@ -302,7 +299,10 @@ async def update_appointment(
 
     scheduled_at = updated_payload.get("scheduled_at")
     if isinstance(scheduled_at, str):
-        scheduled_at = datetime.fromisoformat(scheduled_at)
+        try:
+            scheduled_at = datetime.fromisoformat(scheduled_at)
+        except (ValueError, TypeError):
+            scheduled_at = None
 
     return AppointmentResponse(
         id=appointment_id,

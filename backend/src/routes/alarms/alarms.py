@@ -103,7 +103,7 @@ async def create_alarm(alarm_data: AlarmCreate, current_user=Depends(get_current
 
     now = datetime.now(timezone.utc)
     return AlarmResponse(
-        id=stored.get("event_id", alarm_id),
+        id=alarm_id,
         user_id=str(current_user.id),
         type=alarm_data.type,
         title=alarm_data.title,
@@ -208,10 +208,10 @@ async def update_alarm(
 
     # Merge existing data with updates
     updated_payload = AlarmEventDefinition.create_payload(
-        type=alarm_data.type or payload.get("type"),
-        title=alarm_data.title or payload.get("title"),
+        type=alarm_data.type or payload.get("type") or "medication",
+        title=alarm_data.title or payload.get("title") or "Alarm",
         message=alarm_data.message if alarm_data.message is not None else payload.get("message"),
-        time=alarm_data.time or payload.get("time"),
+        time=alarm_data.time or payload.get("time") or "09:00",
         days_of_week=(
             [d.lower() for d in alarm_data.days_of_week]
             if alarm_data.days_of_week

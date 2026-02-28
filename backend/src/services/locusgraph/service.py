@@ -69,7 +69,15 @@ class LocusGraphService:
         """
         if self.use_mock:
             event_id = self.new_id()
+
+            # Extract id from context_id for routes that expect it
+            # context_id format: "entity_type:id" -> id = "id"
+            extracted_id = event_id
+            if context_id and ":" in context_id:
+                extracted_id = context_id.split(":", 1)[1]
+
             event = {
+                "id": extracted_id,
                 "event_id": event_id,
                 "event_kind": event_kind,
                 "payload": payload,
@@ -90,7 +98,7 @@ class LocusGraphService:
                     if existing.get("context_id") == context_id:
                         self._mock_events[i] = {**existing, **event}
                         print(
-                            f"DEBUG MOCK: Updated event context_id={context_id} (overwrite payload)"
+                            f"DEBUG MOCK: Updated event id={extracted_id}, context_id={context_id} (overwrite payload)"
                         )
                         return {
                             "event_id": existing.get("event_id", event_id),
@@ -100,7 +108,7 @@ class LocusGraphService:
                         }
             self._mock_events.append(event)
             print(
-                f"DEBUG MOCK: Stored event with event_id={event_id}, event_kind={event_kind}, context_id={context_id}"
+                f"DEBUG MOCK: Stored event with id={extracted_id}, event_id={event_id}, event_kind={event_kind}, context_id={context_id}"
             )
             print(f"DEBUG MOCK: Total events in storage: {len(self._mock_events)}")
             return {
