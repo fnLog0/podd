@@ -2,8 +2,8 @@
 //
 //   person:nasim_u123                    ← user (user.ts)
 //     └── nasim_u123:foods               ← anchor (anchor.ts)
-//           ├── foods:breakfast           ← child (child.ts)
-//           │     ├── breakfast:oatmeal   ← dynamic-child (dynamic-child.ts)
+//           ├── foods:breakfast           ← meal (meal.ts)
+//           │     ├── breakfast:oatmeal   ← food-item (food-item.ts)
 //           │     └── breakfast:eggs
 //           ├── foods:lunch
 //           │     └── lunch:salad
@@ -13,16 +13,16 @@
 //                 └── snack:yogurt
 
 export { anchorFoodContext, anchorFoodEventPayload } from "./anchor.js";
-export { childEventPayload, type MealType, type FoodEventInput } from "./child.js";
+export { mealEventPayload, type MealType, type FoodEventInput } from "./meal.js";
 export {
-  dynamicChildEvent,
+  foodItemEvent,
   type FoodItem,
   type Macros,
   type FoodPayload,
-} from "./dynamic-child.js";
+} from "./food-item.js";
 
 import { anchorFoodEventPayload } from "./anchor.js";
-import { childEventPayload, type MealType } from "./child.js";
+import { mealEventPayload, type MealType } from "./meal.js";
 
 const MEAL_TYPES: MealType[] = ["breakfast", "lunch", "dinner", "snack"];
 
@@ -40,12 +40,12 @@ export async function bootstrapFoodContexts(name: string, user_id: string) {
   console.log(`[bootstrap] food anchor created:`, anchorResult);
 
   for (const meal_type of MEAL_TYPES) {
-    const childEvent = childEventPayload({ name, user_id, meal_type });
-    const childResult = await client.storeEvent({
+    const mealEvent = mealEventPayload({ name, user_id, meal_type });
+    const mealResult = await client.storeEvent({
       graph_id: GRAPH_ID,
-      ...childEvent,
-      payload: { data: childEvent.payload },
+      ...mealEvent,
+      payload: { data: mealEvent.payload },
     });
-    console.log(`[bootstrap] ${meal_type} context created:`, childResult);
+    console.log(`[bootstrap] ${meal_type} context created:`, mealResult);
   }
 }

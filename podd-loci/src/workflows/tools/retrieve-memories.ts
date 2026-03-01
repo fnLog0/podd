@@ -1,6 +1,7 @@
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 import { getClient, getGraphId } from "../../locusgraph/client.js";
+import { toToon } from "./toon-encoder.js";
 
 export const retrieveMemoriesTool = new DynamicStructuredTool({
   name: "retrieve_memories",
@@ -37,9 +38,7 @@ export const retrieveMemoriesTool = new DynamicStructuredTool({
       if (!result.memories || (Array.isArray(result.memories) && result.memories.length === 0)) {
         return "No memories found.";
       }
-      return typeof result.memories === "string"
-        ? result.memories
-        : JSON.stringify(result.memories, null, 2);
+      return toToon(result.memories);
     } catch (err) {
       console.error("[retrieve_memories] Error:", err);
       return `Failed to retrieve memories: ${err instanceof Error ? err.message : String(err)}`;

@@ -1,5 +1,5 @@
-// Dynamic child — the actual food item logged by the user.
-// Extends the meal-type child context.
+// Food item — the actual food item logged by the user.
+// Extends the meal-type context.
 //
 // context_id examples: "breakfast:oatmeal"
 //                      "lunch:grilled_chicken"
@@ -20,7 +20,8 @@
 //           └── foods:snack
 //                 └── snack:almonds
 
-import type { MealType } from "./child.js";
+import type { MealType } from "./meal.js";
+import { toToon } from "../../workflows/tools/toon-encoder.js";
 
 const breakfastContextId = `foods:breakfast`;
 const lunchContextId = `foods:lunch`;
@@ -50,13 +51,14 @@ export interface FoodPayload {
   notes: string;
 }
 
-interface DynamicChildEvent {
+interface FoodItemEvent {
   name: string;
   meal_type: MealType;
   payload: FoodPayload;
+  related_to?: string[];
 }
 
-function getChildContextId(type: MealType): string {
+function getMealContextId(type: MealType): string {
   switch (type) {
     case "breakfast":
       return breakfastContextId;
@@ -71,12 +73,13 @@ function getChildContextId(type: MealType): string {
   }
 }
 
-export function dynamicChildEvent(event: DynamicChildEvent) {
+export function foodItemEvent(event: FoodItemEvent) {
   return {
     context_id: `${event.meal_type}:${event.name}`,
     event_kind: "fact" as const,
     source: "agent" as const,
-    payload: event.payload,
-    extends: [getChildContextId(event.meal_type)],
+    payload: { data_toon: toToon(event.payload) },
+    extends: [getMealContextId(event.meal_type)],
+    ...(event.related_to?.length ? { related_to: event.related_to } : {}),
   };
 }

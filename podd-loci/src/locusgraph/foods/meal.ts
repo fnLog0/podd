@@ -1,4 +1,4 @@
-// Child meal-type contexts. One per meal category.
+// Meal-type contexts. One per meal category.
 // Extends the user's anchor food context.
 //
 // context_id examples: "foods:breakfast"
@@ -22,12 +22,12 @@ export interface FoodEventInput {
   meal_type: MealType;
 }
 
-export function childEventPayload(event: FoodEventInput) {
+export function mealEventPayload(event: FoodEventInput) {
   return {
     context_id: `foods:${event.meal_type}`,
     event_kind: "fact" as const,
     source: "system" as const,
-    payload: `this memories refer for ${event.meal_type}:{name} contexts for future events`,
+    payload: `this memories refer for ${event.meal_type}:{llm_generated_name} contexts for future events`,
     extends: [anchorFoodContext(event.name, event.user_id)],
   };
 }
