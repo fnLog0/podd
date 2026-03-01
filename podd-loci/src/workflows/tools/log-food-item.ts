@@ -1,5 +1,6 @@
 import { DynamicTool } from "@langchain/core/tools";
 import { ChatOpenAI } from "@langchain/openai";
+import { resolveOpenAIApiKey, resolveOpenAIModel } from "../../config.js";
 import { getClient, getGraphId } from "../../locusgraph/client.js";
 import { foodItemEvent } from "../../locusgraph/foods/food-item.js";
 import type { FoodPayload } from "../../locusgraph/foods/food-item.js";
@@ -16,7 +17,7 @@ export const logFoodItemTool = new DynamicTool({
   func: async (input: string) => {
     console.log("\n[log_food_item] Input:", input);
 
-    const llm = new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0 });
+    const llm = new ChatOpenAI({ model: resolveOpenAIModel(), temperature: 0, apiKey: resolveOpenAIApiKey() });
     const chain = foodParserPrompt.pipe(llm);
     const response = await chain.invoke({ input });
 

@@ -1,0 +1,27 @@
+meta {
+  name: OAuth Callback
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/auth/callback?code={{oauth_code}}&state={{oauth_provider}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.token: isDefined
+  res.body.data.expires_at: isDefined
+  res.body.data.user_id: isDefined
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success && body.data.token) {
+    bru.setEnvVar("token", body.data.token);
+    bru.setEnvVar("user_id", body.data.user_id);
+  }
+}

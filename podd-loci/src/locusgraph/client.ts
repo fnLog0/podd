@@ -1,23 +1,35 @@
 import { LocusGraphClient, type LocusGraphConfig } from "@locusgraph/client";
+import {
+  resolveLocusGraphServerUrl,
+  resolveLocusGraphAgentSecret,
+  resolveLocusGraphGraphId,
+  onConfigReset,
+} from "../config.js";
 
-function getConfig(): LocusGraphConfig {
+function buildConfig(): LocusGraphConfig {
   const config: LocusGraphConfig = {
-    serverUrl: process.env.LOCUSGRAPH_SERVER_URL ?? "https://api-dev.locusgraph.com",
+    serverUrl: resolveLocusGraphServerUrl(),
   };
-  if (process.env.LOCUSGRAPH_AGENT_SECRET) config.agentSecret = process.env.LOCUSGRAPH_AGENT_SECRET;
-  if (process.env.LOCUSGRAPH_GRAPH_ID) config.graphId = process.env.LOCUSGRAPH_GRAPH_ID;
+  const secret = resolveLocusGraphAgentSecret();
+  if (secret) config.agentSecret = secret;
+  const graphId = resolveLocusGraphGraphId();
+  if (graphId) config.graphId = graphId;
   return config;
 }
 
 export function getGraphId(): string {
-  return process.env.LOCUSGRAPH_GRAPH_ID ?? "";
+  return resolveLocusGraphGraphId();
 }
 
 let _client: LocusGraphClient | null = null;
 
+onConfigReset(() => {
+  _client = null;
+});
+
 export function getClient(config?: LocusGraphConfig): LocusGraphClient {
   if (!_client) {
-    _client = new LocusGraphClient(config ?? getConfig());
+    _client = new LocusGraphClient(config ?? buildConfig());
   }
   return _client;
 }

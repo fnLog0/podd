@@ -16,8 +16,12 @@ interface MasterFoodEventInput {
   user_id: string;
 }
 
+function normalizeId(str: string): string {
+  return str.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_-]/g, "");
+}
+
 export function anchorFoodContext(name: string, user_id: string) {
-  return `${name}_${user_id}:foods`;
+  return `${normalizeId(name)}_${normalizeId(user_id)}:foods`;
 }
 
 export function anchorFoodEventPayload({

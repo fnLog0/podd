@@ -1,0 +1,29 @@
+meta {
+  name: Delete Me
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{base_url}}/me
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.deleted: eq true
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success) {
+    bru.setEnvVar("token", "");
+    bru.setEnvVar("user_id", "");
+  }
+}

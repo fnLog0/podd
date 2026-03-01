@@ -1,0 +1,30 @@
+{
+  "name": "worker",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "cf-typegen": "wrangler types",
+    "db:import": "./scripts/d1-import-local.sh",
+    "db:clean": "./scripts/d1-clean-local.sh",
+    "db:reset": "./scripts/d1-clean-local.sh && ./scripts/d1-import-local.sh",
+    "test:voice": "npx tsx examples/test-voice.ts"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.1.29",
+    "chanfana": "^2.6.3",
+    "hono": "^4.6.20",
+    "podd-loci": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.0",
+    "@types/service-worker-mock": "^2.0.4",
+    "dotenv": "^17.3.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.69.0"
+  }
+}

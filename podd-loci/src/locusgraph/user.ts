@@ -18,7 +18,9 @@ export interface UserEventPayload {
 }
 
 export function userPersonContext(name: string, user_id: string) {
-  return `person:${name}_${user_id}`;
+  const normalizedName = name.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_-]/g, "");
+  const normalizedUserId = user_id.replace(/[^a-z0-9_-]/g, "");
+  return `person:${normalizedName}_${normalizedUserId}`;
 }
 
 export function userEventPayload(user: UserEventPayload) {

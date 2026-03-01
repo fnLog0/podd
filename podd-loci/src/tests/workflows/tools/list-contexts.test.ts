@@ -105,6 +105,7 @@ describe("prefetchContextMap", () => {
 
     expect(result.user_contexts).toBe("No user contexts available.");
     expect(result.food_contexts).toBe("No food contexts available.");
+    expect(result.vitals_contexts).toBe("No vitals contexts available.");
     expect(result.session_contexts).toBe("No session contexts available.");
   });
 
@@ -118,6 +119,7 @@ describe("prefetchContextMap", () => {
 
     expect(result.user_contexts).toBe("No user contexts available.");
     expect(result.food_contexts).toBe("No food contexts available.");
+    expect(result.vitals_contexts).toBe("No vitals contexts available.");
     expect(result.session_contexts).toBe("No session contexts available.");
   });
 });

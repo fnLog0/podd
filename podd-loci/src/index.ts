@@ -1,103 +1,95 @@
-import "dotenv/config";
-import { HumanMessage } from "@langchain/core/messages";
-import { graph } from "./workflows/graph.js";
-import { bootstrapUser } from "./locusgraph/bootstrap.js";
-import { prefetchContextMap } from "./workflows/tools/index.js";
+// ── Config ──
+export { configure, getConfig, type PoddConfig } from "./config.js";
 
-const USER = {
-  name: "nasim",
-  user_id: "u123",
-  email: "nasim@example.com",
-  age: 30,
-  gender: "male" as const,
-  height_cm: 175,
-  weight_kg: 70,
-  activity_level: "moderate" as const,
-  dietary_preferences: ["none" as const],
-  allergies: [],
-  medical_conditions: [],
-  daily_calorie_goal: 2200,
-};
+// ── Graph ──
+export { graph, GraphState, type GraphStateType } from "./workflows/graph.js";
 
-function divider(label: string) {
-  console.log("\n" + "=".repeat(60));
-  console.log(`  ${label}`);
-  console.log("=".repeat(60));
-}
+// ── Tools ──
+export {
+  tools,
+  logFoodItemTool,
+  logVitalTool,
+  retrieveMemoriesTool,
+  listContextsTool,
+  prefetchContextMap,
+  type CategorizedContexts,
+} from "./workflows/tools/index.js";
 
-async function printContextMap() {
-  const { user_contexts, food_contexts, session_contexts } =
-    await prefetchContextMap();
-  console.log("\n--- User Contexts ---");
-  console.log(user_contexts);
-  console.log("\n--- Food Contexts ---");
-  console.log(food_contexts);
-  console.log("\n--- Session Contexts ---");
-  console.log(session_contexts);
-}
+// ── Prompts ──
+export {
+  systemPrompt,
+  foodParserPrompt,
+  vitalsParserPrompt,
+} from "./prompts/index.js";
 
-async function runTurn(
-  prompt: string,
-  threadConfig: { configurable: { thread_id: string } },
-) {
-  console.log(`\n[user] "${prompt}"`);
+// ── LocusGraph Client ──
+export { getClient, getGraphId } from "./locusgraph/client.js";
 
-  const result = await graph.invoke(
-    {
-      messages: [new HumanMessage(prompt)],
-      user_id: USER.user_id,
-      user_name: USER.name,
-    },
-    threadConfig,
-  );
+// ── Bootstrap ──
+export { bootstrapUser, type BootstrapOptions } from "./locusgraph/bootstrap.js";
 
-  const lastMessage = result.messages.at(-1);
-  console.log(`[agent] ${lastMessage?.content}`);
-  console.log(`[info] messages: ${result.messages.length} | session: ${result.session_title}`);
+// ── User ──
+export {
+  userPersonContext,
+  userEventPayload,
+  bootstrapUserContext,
+  type UserEventPayload,
+  type Gender,
+  type ActivityLevel,
+  type DietaryPreference,
+} from "./locusgraph/user.js";
 
-  return result;
-}
+// ── Foods ──
+export {
+  anchorFoodContext,
+  anchorFoodEventPayload,
+  mealEventPayload,
+  foodItemEvent,
+  bootstrapFoodContexts,
+  type FoodEventInput,
+  type FoodPayload,
+  type FoodItem,
+  type Macros,
+  type MealType,
+} from "./locusgraph/foods/index.js";
 
-async function main() {
-  // ── Bootstrap ──
-  divider("BOOTSTRAP");
-  await bootstrapUser(USER);
+// ── Vitals ──
+export {
+  anchorVitalsContext,
+  anchorVitalsEventPayload,
+  vitalTypeEventPayload,
+  vitalReadingEvent,
+  bootstrapVitalsContexts,
+  type VitalType,
+  type VitalTypeEventInput,
+  type VitalReading,
+  type VitalPayload,
+} from "./locusgraph/vitals/index.js";
 
-  // ── Session 1: Food logging ──
-  divider("SESSION 1 — Log food items");
-  const session1 = { configurable: { thread_id: "session_food_log" } };
+// ── Sessions ──
+export {
+  anchorSessionsContext,
+  anchorSessionsEventPayload,
+  sessionContext,
+  sessionEventPayload,
+  turnContext,
+  dynamicTurnEvent,
+  generateSessionTitle,
+  storeSession,
+  storeTurn,
+  bootstrapSessionsContexts,
+  type SessionEventInput,
+  type ToolCallRecord,
+  type TurnPayload,
+  type DynamicTurnEvent,
+} from "./locusgraph/sessions/index.js";
 
-  await runTurn(
-    "I had 2 scrambled eggs and a cup of green tea for breakfast",
-    session1,
-  );
+// ── Session Tracker ──
+export {
+  setCurrentSession,
+  getCurrentSessionContextId,
+  getCurrentTurnContextId,
+} from "./locusgraph/sessions/tracker.js";
 
-  await runTurn(
-    "For lunch I ate a grilled chicken salad with olive oil dressing",
-    session1,
-  );
-
-  await runTurn(
-    "I just had a banana and some almonds as a snack",
-    session1,
-  );
-
-  // ── Session 2: Query food history ──
-  divider("SESSION 2 — Query food & nutrition");
-  const session2 = { configurable: { thread_id: "session_food_query" } };
-
-  await runTurn("What did I eat today?", session2);
-
-  await runTurn("How much protein have I had so far?", session2);
-
-  await runTurn(
-    "Am I on track with my 2200 calorie goal?",
-    session2,
-  );
-
-  // ── Final context map ──
-  divider("FINAL CONTEXT MAP");
-  await printContextMap();
-}
-
-main().catch(console.error);
+// ── TOON Encoder ──
+export { toToon } from "./workflows/tools/toon-encoder.js";

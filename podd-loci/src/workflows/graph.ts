@@ -1,4 +1,3 @@
-import "dotenv/config";
 import {
   Annotation,
   StateGraph,
@@ -11,6 +10,7 @@ import type { BaseMessage } from "@langchain/core/messages";
 import { AIMessage } from "@langchain/core/messages";
 import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
+import { resolveOpenAIApiKey, resolveOpenAIModel } from "../config.js";
 import { tools, prefetchContextMap } from "./tools/index.js";
 import type { UserEventPayload } from "../locusgraph/user.js";
 import { systemPrompt } from "../prompts/index.js";
@@ -59,6 +59,11 @@ export const GraphState = Annotation.Root({
     default: () => "",
   }),
 
+  vitals_contexts: Annotation<string>({
+    ...overwrite<string>(),
+    default: () => "",
+  }),
+
   session_contexts: Annotation<string>({
     ...overwrite<string>(),
     default: () => "",
@@ -73,14 +78,15 @@ export const GraphState = Annotation.Root({
 export type GraphStateType = typeof GraphState.State;
 
 const llm = new ChatOpenAI({
-  model: "gpt-4o-mini",
+  model: resolveOpenAIModel(),
   temperature: 0,
+  apiKey: resolveOpenAIApiKey(),
 });
 
 const modelWithTools = llm.bindTools(tools);
 
 async function contextNode(state: GraphStateType) {
-  const { user_contexts, food_contexts, session_contexts } =
+  const { user_contexts, food_contexts, vitals_contexts, session_contexts } =
     await prefetchContextMap();
 
   let sessionTitle = state.session_title;
@@ -103,6 +109,7 @@ async function contextNode(state: GraphStateType) {
   return {
     user_contexts,
     food_contexts,
+    vitals_contexts,
     session_contexts,
     session_title: sessionTitle,
   };
@@ -112,6 +119,7 @@ async function agentNode(state: GraphStateType) {
   const formattedPrompt = await systemPrompt.formatMessages({
     user_contexts: state.user_contexts || "No user contexts available.",
     food_contexts: state.food_contexts || "No food contexts available.",
+    vitals_contexts: state.vitals_contexts || "No vitals contexts available.",
     session_contexts: state.session_contexts || "No session contexts available.",
   });
 

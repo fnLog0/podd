@@ -1,0 +1,29 @@
+meta {
+  name: Bootstrap Me
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/me/bootstrap
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.bootstrapped: eq true
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success) {
+    bru.setEnvVar("bootstrapped", String(body.data.bootstrapped));
+    bru.setEnvVar("bootstrap_skipped", String(body.data.skipped));
+  }
+}

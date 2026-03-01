@@ -1,9 +1,10 @@
 {
-  "name": "tests-e2e",
+  "name": "podd-loci",
   "version": "1.0.0",
   "type": "module",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "npx tsx src/index.ts",
+    "demo": "npx tsx examples/demo.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },

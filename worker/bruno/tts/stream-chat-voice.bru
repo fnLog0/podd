@@ -1,0 +1,30 @@
+meta {
+  name: Stream Chat with Voice
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/tts/chat/stream
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "message": "Tell me a short story about a brave cat",
+    "thread_id": "{{chat_thread_id}}",
+    "tts_options": {
+      "target_language_code": "hi-IN",
+      "speaker": "shubh",
+      "model": "bulbul:v3",
+      "pace": 1.0,
+      "output_audio_codec": "mp3"
+    }
+  }
+}

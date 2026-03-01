@@ -1,0 +1,33 @@
+meta {
+  name: Get Me
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/me
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.id: isDefined
+  res.body.data.email: isDefined
+  res.body.data.name: isDefined
+  res.body.data.created_at: isDefined
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success) {
+    bru.setEnvVar("user_id", body.data.id);
+    bru.setEnvVar("user_name", body.data.name);
+    bru.setEnvVar("user_email", body.data.email);
+  }
+}

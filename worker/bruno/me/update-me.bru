@@ -1,0 +1,48 @@
+meta {
+  name: Update Me
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{base_url}}/me
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "age": 28,
+    "gender": "male",
+    "height_cm": 175,
+    "weight_kg": 70,
+    "activity_level": "moderate",
+    "dietary_preferences": ["none"],
+    "allergies": [],
+    "medical_conditions": [],
+    "daily_calorie_goal": 2200
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.age: eq 28
+  res.body.data.gender: eq male
+  res.body.data.height_cm: eq 175
+  res.body.data.weight_kg: eq 70
+  res.body.data.activity_level: eq moderate
+  res.body.data.daily_calorie_goal: eq 2200
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success) {
+    bru.setEnvVar("user_updated", "true");
+  }
+}

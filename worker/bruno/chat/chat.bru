@@ -1,0 +1,38 @@
+meta {
+  name: Send Chat Message
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "message": "I had 2 scrambled eggs and a cup of green tea for breakfast",
+    "thread_id": "test_thread_{{user_id}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.response: isDefined
+  res.body.data.thread_id: isDefined
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success) {
+    bru.setEnvVar("chat_thread_id", body.data.thread_id);
+    bru.setEnvVar("chat_session_title", body.data.session_title);
+  }
+}

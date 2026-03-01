@@ -1,0 +1,29 @@
+meta {
+  name: Text to Speech
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/tts
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "text": "Hello! This is a streaming text-to-speech example.",
+    "target_language_code": "hi-IN",
+    "speaker": "shubh",
+    "model": "bulbul:v3",
+    "pace": 1.0,
+    "speech_sample_rate": 22050,
+    "output_audio_codec": "mp3",
+    "enable_preprocessing": true
+  }
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Logout All
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/sessions/logout/all
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.logged_out_all: eq true
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success) {
+    bru.setEnvVar("token", "");
+  }
+}

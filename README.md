@@ -1,5 +1,9 @@
 # Podd Health Assistant
 
+locusgraph is context orchstration or prompt orchestration in a worlflow or automation
+
+we are implicite memories of ai agents 
+
 A comprehensive health assistant application with dual-database architecture (SQLite for authentication, LocusGraph SDK for health data storage).
 
 ## Project Structure

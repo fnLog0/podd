@@ -52,6 +52,7 @@ export const listContextsTool = new DynamicStructuredTool({
 const NO_CONTEXTS: CategorizedContexts = {
   user_contexts: "No user contexts available.",
   food_contexts: "No food contexts available.",
+  vitals_contexts: "No vitals contexts available.",
   session_contexts: "No session contexts available.",
 };
 

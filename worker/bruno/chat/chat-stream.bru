@@ -1,0 +1,27 @@
+meta {
+  name: Stream Chat Message
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/chat/stream
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "message": "For lunch I ate a grilled chicken salad with olive oil dressing",
+    "thread_id": "{{chat_thread_id}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

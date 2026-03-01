@@ -4,6 +4,7 @@ import { systemPrompt } from "../../prompts/system.js";
 const defaultVars = {
   user_contexts: "- person:nasim_u123",
   food_contexts: "- nasim_u123:foods (anchor)\n  - foods:breakfast",
+  vitals_contexts: "- nasim_u123:vitals (anchor)\n  - vitals:blood_pressure",
   session_contexts: "- nasim_u123:sessions (anchor)",
 };
 
@@ -32,18 +33,27 @@ describe("systemPrompt", () => {
     expect(content).toContain("nasim_u123:sessions (anchor)");
   });
 
+  it("renders vitals_contexts variable", async () => {
+    const messages = await systemPrompt.formatMessages(defaultVars);
+    const content = String(messages[0]!.content);
+    expect(content).toContain("nasim_u123:vitals (anchor)");
+    expect(content).toContain("vitals:blood_pressure");
+  });
+
   it("has separate sections for each context category", async () => {
     const messages = await systemPrompt.formatMessages(defaultVars);
     const content = String(messages[0]!.content);
     expect(content).toContain("## User Contexts");
     expect(content).toContain("## Food Contexts");
+    expect(content).toContain("## Vitals Contexts");
     expect(content).toContain("## Session & Turn Contexts");
   });
 
-  it("mentions all three tools in the prompt", async () => {
+  it("mentions all four tools in the prompt", async () => {
     const messages = await systemPrompt.formatMessages(defaultVars);
     const content = String(messages[0]!.content);
     expect(content).toContain("log_food_item");
+    expect(content).toContain("log_vital");
     expect(content).toContain("retrieve_memories");
     expect(content).toContain("list_contexts");
   });

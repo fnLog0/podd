@@ -1,0 +1,11 @@
+{
+  "name": "podd",
+  "private": true,
+  "scripts": {
+    "test": "pnpm --filter podd-loci test",
+    "test:watch": "pnpm --filter podd-loci test:watch",
+    "demo": "pnpm --filter podd-loci demo",
+    "dev:worker": "pnpm --filter worker dev",
+    "deploy:worker": "pnpm --filter worker deploy"
+  }
+}

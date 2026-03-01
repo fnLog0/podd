@@ -17,6 +17,17 @@ export {
 } from "./foods/index.js";
 
 export {
+  anchorVitalsContext,
+  anchorVitalsEventPayload,
+  vitalTypeEventPayload,
+  vitalReadingEvent,
+  type VitalType,
+  type VitalTypeEventInput,
+  type VitalReading,
+  type VitalPayload,
+} from "./vitals/index.js";
+
+export {
   anchorSessionsContext,
   anchorSessionsEventPayload,
   sessionContext,

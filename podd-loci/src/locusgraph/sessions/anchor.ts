@@ -9,8 +9,12 @@
 
 import { userPersonContext } from "../user.js";
 
+function normalizeId(str: string): string {
+  return str.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_-]/g, "");
+}
+
 export function anchorSessionsContext(name: string, user_id: string) {
-  return `${name}_${user_id}:sessions`;
+  return `${normalizeId(name)}_${normalizeId(user_id)}:sessions`;
 }
 
 export function anchorSessionsEventPayload({

@@ -1,0 +1,40 @@
+meta {
+  name: Dev Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/dev/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "dev@podd.local",
+    "name": "Dev User"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.token: isDefined
+  res.body.data.expires_at: isDefined
+  res.body.data.user_id: isDefined
+  res.body.data.email: eq dev@podd.local
+  res.body.data.name: eq Dev User
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body.success && body.data.token) {
+    bru.setEnvVar("token", body.data.token);
+    bru.setEnvVar("user_id", body.data.user_id);
+  }
+}

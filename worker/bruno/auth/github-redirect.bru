@@ -1,0 +1,16 @@
+meta {
+  name: GitHub Redirect
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/auth/github
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 302
+  res.headers.location: contains github.com/login/oauth/authorize
+}

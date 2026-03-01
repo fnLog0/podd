@@ -1,0 +1,41 @@
+meta {
+  name: Chat with Voice
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/tts/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "message": "what i eat today",
+    "thread_id": "{{chat_thread_id}}",
+    "tts_options": {
+      "target_language_code": "hi-IN",
+      "speaker": "shubh",
+      "model": "bulbul:v3",
+      "pace": 1.0,
+      "output_audio_codec": "mp3"
+    }
+  }
+}
+
+script:post-response {
+  const threadId = res.headers.get("X-Thread-Id");
+  const responseText = res.headers.get("X-Response-Text");
+  if (threadId) {
+    bru.setEnvVar("chat_thread_id", threadId);
+  }
+  if (responseText) {
+    console.log("Response text:", decodeURIComponent(responseText));
+  }
+}

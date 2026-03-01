@@ -1,0 +1,29 @@
+meta {
+  name: Update Me - Invalid
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/me
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "age": -5,
+    "gender": "invalid_value"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.success: eq false
+  res.body.error: isDefined
+}

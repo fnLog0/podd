@@ -8,11 +8,21 @@ interface RawContext {
 export interface CategorizedContexts {
   user_contexts: string;
   food_contexts: string;
+  vitals_contexts: string;
   session_contexts: string;
 }
 
 const FOOD_ITEM_PREFIXES = ["breakfast:", "lunch:", "dinner:", "snack:"];
 const MEAL_TYPES = ["breakfast", "lunch", "dinner", "snack"];
+
+const VITAL_READING_PREFIXES = [
+  "blood_pressure:", "heart_rate:", "weight:",
+  "blood_sugar:", "temperature:", "oxygen_saturation:",
+];
+const VITAL_TYPES = [
+  "blood_pressure", "heart_rate", "weight",
+  "blood_sugar", "temperature", "oxygen_saturation",
+];
 
 function isUserContext(id: string): boolean {
   return id.startsWith("person:");
@@ -42,6 +52,25 @@ function isTurnContext(id: string): boolean {
   return id.startsWith("turn:");
 }
 
+function isVitalsAnchor(id: string): boolean {
+  return id.endsWith(":vitals");
+}
+
+function isVitalTypeContext(id: string): boolean {
+  return id.startsWith("vitals:");
+}
+
+function isVitalReadingContext(id: string): boolean {
+  return VITAL_READING_PREFIXES.some((p) => id.startsWith(p));
+}
+
+function getVitalTypeFromReading(id: string): string | null {
+  for (const vt of VITAL_TYPES) {
+    if (id.startsWith(`${vt}:`)) return vt;
+  }
+  return null;
+}
+
 function getMealTypeFromFoodItem(id: string): string | null {
   for (const meal of MEAL_TYPES) {
     if (id.startsWith(`${meal}:`)) return meal;
@@ -58,6 +87,9 @@ function classifyContext(id: string): string {
   if (isFoodAnchor(id)) return "anchor";
   if (isMealContext(id)) return "meal";
   if (isFoodItemContext(id)) return "item";
+  if (isVitalsAnchor(id)) return "anchor";
+  if (isVitalTypeContext(id)) return "vital_type";
+  if (isVitalReadingContext(id)) return "reading";
   if (isSessionAnchor(id)) return "anchor";
   if (isSessionContext(id)) return "session";
   if (isTurnContext(id)) return "turn";
@@ -81,6 +113,25 @@ function buildFoodHierarchy(contexts: RawContext[]): Record<string, unknown> {
   return {
     anchors: anchors.map((a) => a.context_id),
     meals: mealNodes,
+  };
+}
+
+function buildVitalsHierarchy(contexts: RawContext[]): Record<string, unknown> {
+  const anchors = contexts.filter((c) => isVitalsAnchor(c.context_id));
+  const types = contexts.filter((c) => isVitalTypeContext(c.context_id));
+  const readings = contexts.filter((c) => isVitalReadingContext(c.context_id));
+
+  const typeNodes = types.map((vt) => {
+    const typeName = vt.context_id.replace("vitals:", "");
+    const typeReadings = readings
+      .filter((r) => getVitalTypeFromReading(r.context_id) === typeName)
+      .map((r) => ({ id: r.context_id, role: "reading" }));
+    return { id: vt.context_id, role: "vital_type", readings: typeReadings };
+  });
+
+  return {
+    anchors: anchors.map((a) => a.context_id),
+    types: typeNodes,
   };
 }
 
@@ -114,6 +165,11 @@ function formatUserContexts(contexts: RawContext[]): string {
 function formatFoodContexts(contexts: RawContext[]): string {
   if (contexts.length === 0) return "No food contexts available.";
   return toToon(buildFoodHierarchy(contexts));
+}
+
+function formatVitalsContexts(contexts: RawContext[]): string {
+  if (contexts.length === 0) return "No vitals contexts available.";
+  return toToon(buildVitalsHierarchy(contexts));
 }
 
 function formatSessionContexts(contexts: RawContext[]): string {
@@ -155,6 +211,12 @@ export function categorizeContexts(
       isMealContext(c.context_id) ||
       isFoodItemContext(c.context_id),
   );
+  const vitals = contexts.filter(
+    (c) =>
+      isVitalsAnchor(c.context_id) ||
+      isVitalTypeContext(c.context_id) ||
+      isVitalReadingContext(c.context_id),
+  );
   const session = contexts.filter(
     (c) =>
       isSessionAnchor(c.context_id) ||
@@ -165,6 +227,7 @@ export function categorizeContexts(
   return {
     user_contexts: formatUserContexts(user),
     food_contexts: formatFoodContexts(food),
+    vitals_contexts: formatVitalsContexts(vitals),
     session_contexts: formatSessionContexts(session),
   };
 }
