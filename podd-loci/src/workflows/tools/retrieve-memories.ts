@@ -32,8 +32,14 @@ export const retrieveMemoriesTool = new DynamicStructuredTool({
       );
 
       console.log("[retrieve_memories] Items found:", result.items_found);
+      console.log("[retrieve_memories] Raw result:", JSON.stringify(result, null, 2));
 
-      return result.memories || "No memories found.";
+      if (!result.memories || (Array.isArray(result.memories) && result.memories.length === 0)) {
+        return "No memories found.";
+      }
+      return typeof result.memories === "string"
+        ? result.memories
+        : JSON.stringify(result.memories, null, 2);
     } catch (err) {
       console.error("[retrieve_memories] Error:", err);
       return `Failed to retrieve memories: ${err instanceof Error ? err.message : String(err)}`;

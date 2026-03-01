@@ -55,7 +55,7 @@ const SYSTEM_PROMPT = `You are a health assistant that tracks food intake and pr
 
 You have access to a memory system (LocusGraph) with the following tools:
 - log_food: Use when the user reports what they ate. Parses food into structured nutrition data and stores it.
-- retrieve_memories: Use when you need past context (food history, patterns) to answer the user. Pass a query and optional contextIds to filter.
+- retrieve_memories: Semantic search over stored memories. Pass a descriptive query (e.g. "breakfast food logged today", "protein intake"). Use contextIds to narrow results — these MUST be exact context IDs from the context map below (e.g. "foods:breakfast", "nasim_u123:foods"). Do NOT invent context IDs. If unsure, omit contextIds to search all contexts.
 - list_contexts: Use to refresh the context map and discover available contexts.
 - get_current_time: Use when you need the current date/time.
 
