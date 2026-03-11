@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "Codex",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": -3.6, "left": -34.2, "attrs": {} },
+    { "type": "wokwi-led", "id": "ledRec", "top": -111.6, "left": 278.6, "attrs": { "color": "red" } },
+    { "type": "wokwi-led", "id": "ledSys", "top": -63.6, "left": 278.6, "attrs": { "color": "green" } },
+    { "type": "wokwi-resistor", "id": "rRec", "top": -91.2, "left": 190.8, "rotate": 180, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rSys", "top": -43.2, "left": 190.8, "rotate": 180, "attrs": { "value": "220" } },
+    { "type": "wokwi-pushbutton", "id": "btn", "top": 154.6, "left": 249.6, "attrs": { "color": "blue" } }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "esp:33", "rRec:1", "green", [ "v0" ] ],
+    [ "rRec:2", "ledRec:A", "green", [ "h0" ] ],
+    [ "ledRec:C", "esp:GND.1", "black", [ "h0" ] ],
+    [ "esp:27", "rSys:1", "green", [ "v0" ] ],
+    [ "rSys:2", "ledSys:A", "green", [ "h0" ] ],
+    [ "ledSys:C", "esp:GND.1", "black", [ "h0" ] ],
+    [ "esp:4", "btn:1.l", "green", [ "v0" ] ],
+    [ "btn:2.l", "esp:GND.2", "black", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
