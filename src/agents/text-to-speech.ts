@@ -54,7 +54,7 @@ async function textToSpeech(text: string): Promise<string> {
 
     // Use Sarvam AI TTS API
     const response = await getClient().textToSpeech.convert({
-      text: text.trim(),  // Trim whitespace
+      text: text.trim(), // Trim whitespace
       target_language_code: "en-IN",
       model: "bulbul:v3",
       speaker: "shubh",
@@ -68,7 +68,7 @@ async function textToSpeech(text: string): Promise<string> {
         throw new Error("Empty audio data received from TTS API");
       }
       // Decode base64 to buffer
-      const audioBuffer = Buffer.from(audioBase64, 'base64');
+      const audioBuffer = Buffer.from(audioBase64, "base64");
       if (audioBuffer.length === 0) {
         throw new Error("Failed to decode audio data from base64");
       }
@@ -88,8 +88,6 @@ async function textToSpeech(text: string): Promise<string> {
     );
   }
 }
-
-
 
 /**
  * Agent node for text-to-speech

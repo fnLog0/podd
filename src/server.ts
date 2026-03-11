@@ -103,7 +103,7 @@ app.get("/audio/:filename", (req: Request, res: Response) => {
     const filename = req.params.filename;
 
     // Sanitize filename to prevent directory traversal
-    if (filename.includes('..') || filename.includes('\\')) {
+    if (filename.includes("..") || filename.includes("\\")) {
       console.log(`❌ Invalid filename detected: ${filename}`);
       return res.status(400).json({
         success: false,
@@ -118,7 +118,7 @@ app.get("/audio/:filename", (req: Request, res: Response) => {
       console.log(`🔍 Looking in directory: ${TTS_OUTPUT_DIR}`);
       try {
         const files = fs.readdirSync(TTS_OUTPUT_DIR);
-        console.log(`📂 Available files: ${files.join(', ')}`);
+        console.log(`📂 Available files: ${files.join(", ")}`);
       } catch (e) {
         console.log(`❌ Could not list directory: ${e}`);
       }

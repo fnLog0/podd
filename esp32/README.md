@@ -53,6 +53,7 @@ GND      ────── GND
 ```
 
 ⚠️ **IMPORTANT NOTE:**
+
 - GPIO 25 and GPIO 26 are ESP32's **DAC channels** (DAC1, DAC2), **NOT I2S pins**
 - PAM8403 is an **ANALOG amplifier**, it accepts analog input (0-3.3V AC)
 - DO NOT use I2S protocol with PAM8403 directly
@@ -61,6 +62,7 @@ GND      ────── GND
 ### LEDs → ESP32
 
 **LED1 (Recording Indicator - Red):**
+
 ```
 ESP32 GPIO 33 ──► 220Ω resistor ──► LED1 Anode (+)
                                       │
@@ -69,6 +71,7 @@ ESP32 GPIO 33 ──► 220Ω resistor ──► LED1 Anode (+)
 ```
 
 **LED2 (System Status - Green):**
+
 ```
 ESP32 GPIO 27 ──► 220Ω resistor ──► LED2 Anode (+)
                                       │
@@ -83,6 +86,7 @@ ESP32 GPIO 27 ──► 220Ω resistor ──► LED2 Anode (+)
 ### Push Button → ESP32
 
 **Using ESP32 Internal Pull-up (Recommended):**
+
 ```
 ESP32 GPIO 4  ──► Button Pin 1
                     │
@@ -90,25 +94,27 @@ ESP32 GPIO 4  ──► Button Pin 1
 ```
 
 ✅ **Why this is best:**
+
 - Simpler wiring (only 2 connections)
 - No extra components needed
 - Built-in 30-50kΩ pull-up is sufficient for button input
 - Standard practice for ESP32 projects
 
 **Button Functions:**
+
 - **Short Press (<2s)**: Start/stop recording (5 seconds duration)
 - **Long Press (>2s)**: System reset
 
 ## Summary Table
 
-| Component       | ESP32 Pins Used         | Connection Type  |
-|-----------------|-------------------------|------------------|
-| INMP441 Mic     | 14, 15, 16, 3.3V, GND  | I2S              |
-| PAM8403 Amp     | 25, 26, 5V, GND        | DAC (Analog)     |
-| Speaker         | -                       | Analog           |
-| LED1 (Rec)      | GPIO 33                 | Digital Out      |
-| LED2 (Sys)      | GPIO 27                 | Digital Out      |
-| Push Button     | GPIO 4                  | Digital In       |
+| Component   | ESP32 Pins Used       | Connection Type |
+| ----------- | --------------------- | --------------- |
+| INMP441 Mic | 14, 15, 16, 3.3V, GND | I2S             |
+| PAM8403 Amp | 25, 26, 5V, GND       | DAC (Analog)    |
+| Speaker     | -                     | Analog          |
+| LED1 (Rec)  | GPIO 33               | Digital Out     |
+| LED2 (Sys)  | GPIO 27               | Digital Out     |
+| Push Button | GPIO 4                | Digital In      |
 
 ## Configuration
 
@@ -122,6 +128,7 @@ const char* audioBaseUrl = "http://192.168.1.6:3000/audio/"; // ✅ Correct IP
 ```
 
 ⚠️ **Update these values only if:**
+
 - Your WiFi network name or password changes
 - Your computer's IP address changes
 - You're setting up on a different network
@@ -403,15 +410,18 @@ Press button to record
 ## Pin Summary Reference
 
 ### I2S Configuration (Microphone)
+
 - `BCLK` = GPIO 14
 - `LRCLK` = GPIO 15
 - `DATA` = GPIO 16
 
 ### DAC Configuration (Speaker)
+
 - `DAC1` = GPIO 25 (Left channel)
 - `DAC2` = GPIO 26 (Right channel)
 
 ### GPIO Configuration
+
 - `LED_REC` = GPIO 33 (Recording indicator - Red)
 - `LED_SYS` = GPIO 27 (System status - Green)
 - `BUTTON` = GPIO 4 (Control button)

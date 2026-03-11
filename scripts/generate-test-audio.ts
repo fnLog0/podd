@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 // Audio parameters
 const SAMPLE_RATE = 16000;
@@ -54,7 +54,7 @@ function createWavFile(pcmData: Buffer): Buffer {
 }
 
 async function generateTestAudio(): Promise<void> {
-  console.log("🎵 Generating test audio...");
+  console.log("Generating test audio...");
 
   const pcmData = generateTonePCM();
   const wavData = createWavFile(pcmData);
@@ -62,11 +62,10 @@ async function generateTestAudio(): Promise<void> {
   const outputPath = path.join(process.cwd(), "test-files", "test-audio.wav");
   fs.writeFileSync(outputPath, wavData);
 
-  console.log(`✅ Generated test-files/test-audio.wav`);
+  console.log(`Generated test-files/test-audio.wav`);
   console.log(`   Duration: ${DURATION}s, Sample Rate: ${SAMPLE_RATE}Hz`);
   console.log(`   Tone: ${FREQUENCY}Hz (A4 note)`);
   console.log(`   Samples: ${pcmData.length / 2}`);
-  console.log(`\n💡 Use this file to test the API with Bruno`);
 }
 
 generateTestAudio().catch(console.error);
