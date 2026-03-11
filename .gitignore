@@ -1,0 +1,16 @@
+node_modules
+dist
+*.log
+.env
+.env.*
+coverage
+temp
+esp32/uploads
+test
+test-files/input/*
+tts-output/output/*
+*.bru
+audio-sample.wav
+!.gitkeep
+test-files/input/.gitkeep
+tts-output/output/.gitkeep
