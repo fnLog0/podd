@@ -1,0 +1,86 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production
+dist/
+build/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs/
+
+# Bruno API testing
+bru-no/
+*.bru
+.bruno/
+
+# ESP32/PlatformIO
+.esp32/
+.pio/
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.bak
+
+# Audio files (except keep files)
+test-files/input/*
+tts-output/output/*
+audio-sample.wav
+*.wav
+*.mp3
+*.ogg
+!*.gitkeep
+!test-files/input/.gitkeep
+!tts-output/output/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
