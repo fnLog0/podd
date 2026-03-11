@@ -31,7 +31,7 @@ export function anchorFoodEventPayload({
   return {
     context_id: anchorFoodContext(name, user_id),
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: `this memories link to these context foods:breakfast, foods:lunch, foods:dinner, foods:snack`,
     extends: [userPersonContext(name, user_id)],
   };

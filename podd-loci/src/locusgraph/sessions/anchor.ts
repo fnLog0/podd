@@ -27,7 +27,7 @@ export function anchorSessionsEventPayload({
   return {
     context_id: anchorSessionsContext(name, user_id),
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: `all conversation sessions for user ${name} — each session is stored as session:{chat_title}`,
     extends: [userPersonContext(name, user_id)],
   };

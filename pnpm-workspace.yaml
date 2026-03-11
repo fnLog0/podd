@@ -1,3 +1,6 @@
 packages:
   - "podd-loci"
+  - "ordigo-lite"
   - "worker"
+  - "locus-components"
+  - "locus-components/www"

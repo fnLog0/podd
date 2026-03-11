@@ -26,7 +26,7 @@ export function mealEventPayload(event: FoodEventInput) {
   return {
     context_id: `foods:${event.meal_type}`,
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: `this memories refer for ${event.meal_type}:{llm_generated_name} contexts for future events`,
     extends: [anchorFoodContext(event.name, event.user_id)],
   };

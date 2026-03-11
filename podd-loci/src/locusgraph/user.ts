@@ -27,7 +27,7 @@ export function userEventPayload(user: UserEventPayload) {
   return {
     context_id: userPersonContext(user.name, user.user_id),
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: { ...user },
   };
 }

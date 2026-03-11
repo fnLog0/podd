@@ -31,7 +31,7 @@ export function anchorVitalsEventPayload({
   return {
     context_id: anchorVitalsContext(name, user_id),
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: `this memories link to these context vitals:blood_pressure, vitals:heart_rate, vitals:weight, vitals:blood_sugar, vitals:temperature, vitals:oxygen_saturation`,
     extends: [userPersonContext(name, user_id)],
   };

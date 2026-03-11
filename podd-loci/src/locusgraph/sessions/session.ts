@@ -25,7 +25,7 @@ export function sessionEventPayload(event: SessionEventInput) {
   return {
     context_id: sessionContext(event.session_title),
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: `conversation session about "${event.session_title.replace(/_/g, " ")}" — each turn is stored as turn:${event.session_title}_t{N}`,
     extends: [anchorSessionsContext(event.name, event.user_id)],
   };

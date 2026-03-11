@@ -33,7 +33,7 @@ export function vitalTypeEventPayload(event: VitalTypeEventInput) {
   return {
     context_id: `vitals:${event.vital_type}`,
     event_kind: "fact" as const,
-    source: "system" as const,
+    source: "validator" as const,
     payload: `this memories refer for ${event.vital_type}:{llm_generated_name} contexts for future events`,
     extends: [anchorVitalsContext(event.name, event.user_id)],
   };
