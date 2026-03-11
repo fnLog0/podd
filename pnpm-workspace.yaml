@@ -1,6 +1,5 @@
 packages:
   - "podd-loci"
-  - "ordigo-lite"
+  - "podd-cli"
+  - "test-server"
   - "worker"
-  - "locus-components"
-  - "locus-components/www"

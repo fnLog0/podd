@@ -1,0 +1,15 @@
+{
+  "name": "podd-cli",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "podd": "./cli.mjs"
+  },
+  "scripts": {
+    "start": "node cli.mjs"
+  },
+  "dependencies": {
+    "incur": "^0.2.0"
+  }
+}

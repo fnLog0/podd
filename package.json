@@ -2,10 +2,13 @@
   "name": "podd",
   "private": true,
   "scripts": {
+    "cli": "pnpm --filter podd-cli exec node cli.mjs",
+    "cli:help": "pnpm --filter podd-cli exec node cli.mjs --help",
     "test": "pnpm --filter podd-loci test",
     "test:watch": "pnpm --filter podd-loci test:watch",
     "demo": "pnpm --filter podd-loci demo",
     "dev:worker": "pnpm --filter worker dev",
-    "deploy:worker": "pnpm --filter worker deploy"
+    "deploy:worker": "pnpm --filter worker deploy",
+    "dev:test-server": "pnpm --filter test-server start"
   }
 }
