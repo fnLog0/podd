@@ -1,5 +1,4 @@
-#include "src/core/AppController.h"
-#include "src/core/AppState.h"
+#include "src/app/ApplicationController.h"
 
 AppState appState;
 

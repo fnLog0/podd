@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <WiFi.h>
 
-#include "../core/Config.h"
-#include "../core/SystemUtils.h"
-#include "WifiManager.h"
+#include "../app/RuntimeConfig.h"
+#include "../app/DeviceUtilities.h"
+#include "WiFiService.h"
 
 namespace {
 
@@ -39,7 +39,7 @@ void setupWiFi() {
   WiFi.setSleep(false);
 }
 
-void connectWiFi() {
+bool connectWiFi() {
   Serial.println("Connecting to WiFi...");
 
   if (WiFi.status() == WL_CONNECTED) {
@@ -47,7 +47,7 @@ void connectWiFi() {
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
     digitalWrite(Config::kLedSysPin, HIGH);
-    return;
+    return true;
   }
 
   WiFi.mode(WIFI_OFF);
@@ -75,10 +75,12 @@ void connectWiFi() {
     Serial.print(WiFi.RSSI());
     Serial.println(" dBm");
     digitalWrite(Config::kLedSysPin, HIGH);
-  } else {
-    Serial.println("\nWiFi connection failed");
-    blinkLED(Config::kLedSysPin, 5);
+    return true;
   }
+
+  Serial.println("\nWiFi connection failed");
+  blinkLed(Config::kLedSysPin, 5);
+  return false;
 }
 
 void maintainWiFiConnection(AppState& state) {

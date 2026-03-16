@@ -1,0 +1,29 @@
+{
+  "cpu": {
+    "name": "esp32",
+    "fqbn": "esp32:esp32:esp32",
+    "port": "",
+    "board": "esp32:esp32:esp32",
+    "configuration": "PSRAM=disabled,PartitionScheme=default,CPUFreq=240,FlashMode=qio,FlashFreq=80,FlashSize=4M,UploadSpeed=921600,DebugLevel=debug_core"
+  },
+  "build_options": {
+    "build_flags": [
+      "-DCORE_DEBUG_LEVEL=2"
+    ],
+    "libraries": [
+      "ArduinoJson"
+    ],
+    "include_paths": [
+      "src",
+      "src/app",
+      "src/connectivity",
+      "src/audio"
+    ]
+  },
+  "upload": {
+    "speed": "921600"
+  },
+  "monitor": {
+    "speed": "115200"
+  }
+}

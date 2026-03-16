@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AppState.h"
+#include "ApplicationState.h"
 
 void setupApp(AppState& state);
 void loopApp(AppState& state);

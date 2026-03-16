@@ -1,12 +1,17 @@
 #include <Arduino.h>
 
-#include "AppController.h"
-#include "../audio/AudioManager.h"
-#include "Config.h"
-#include "SystemUtils.h"
-#include "../network/WifiManager.h"
+#include "ApplicationController.h"
+#include "../audio/AudioService.h"
+#include "RuntimeConfig.h"
+#include "DeviceUtilities.h"
+#include "../connectivity/WiFiService.h"
+
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 
 void setupApp(AppState& state) {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // Disable brownout detector
+  
   Serial.begin(115200);
   delay(1000);
   Serial.println("Starting ESP32 Audio Assistant...");
@@ -23,8 +28,18 @@ void setupApp(AppState& state) {
   delay(100);
 
   setupWiFi();
-  connectWiFi();
-  setupAudioHardware();
+  const bool wifiOk = connectWiFi();
+  if (!wifiOk) {
+    Serial.println("WARNING: WiFi not connected at startup");
+    // Recording will re-check WiFi before each attempt
+  }
+
+  const bool audioInitialized = setupAudioHardware();
+  if (!audioInitialized) {
+    Serial.println("WARNING: Audio hardware init failed");
+    blinkLed(Config::kLedRecPin, 5);
+    // Continue in degraded mode so the device remains reachable.
+  }
 
   Serial.println("\n========================================");
   Serial.println("System Ready!");
@@ -33,7 +48,7 @@ void setupApp(AppState& state) {
   Serial.println("Hold button >2s for system reset");
   Serial.println("========================================\n");
 
-  blinkLED(Config::kLedSysPin, 3);
+  blinkLed(Config::kLedSysPin, 3);
   state.lastWiFiCheck = millis();
 }
 
@@ -79,7 +94,7 @@ void loopApp(AppState& state) {
     const unsigned long pressDuration = millis() - state.pressStartTime;
     if (pressDuration > Config::kLongPressMs) {
       Serial.println("Long press detected - Release to reset...");
-      blinkLED(Config::kLedSysPin, 1);
+      blinkLed(Config::kLedSysPin, 1);
     }
   }
 

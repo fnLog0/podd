@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../core/AppState.h"
+#include "../app/ApplicationState.h"
 
 void setupWiFi();
-void connectWiFi();
+bool connectWiFi();
 void maintainWiFiConnection(AppState& state);

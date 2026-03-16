@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
-#include "Config.h"
-#include "SystemUtils.h"
+#include "RuntimeConfig.h"
+#include "DeviceUtilities.h"
 
-void blinkLED(int pin, int times) {
+void blinkLed(int pin, int times) {
   for (int i = 0; i < times; i++) {
     digitalWrite(pin, HIGH);
     delay(100);
@@ -14,7 +14,7 @@ void blinkLED(int pin, int times) {
 
 void resetSystem() {
   Serial.println("Resetting system...");
-  blinkLED(Config::kLedSysPin, 5);
+  blinkLed(Config::kLedSysPin, 5);
   delay(1000);
   ESP.restart();
 }

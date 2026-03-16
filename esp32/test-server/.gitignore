@@ -1,0 +1,18 @@
+# Generated audio files
+uploads/
+audio/output/
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local

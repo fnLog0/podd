@@ -2,19 +2,11 @@
 
 namespace Config {
 
-#if defined(SIMULATION_MODE)
-static const char kSsid[] = "Wokwi-GUEST";
-static const char kPassword[] = "";
-
-static const char kServerUrl[] = "http://host.wokwi.internal:3000/upload";
-static const char kAudioBaseUrl[] = "http://host.wokwi.internal:3000/audio/";
-#else
 static const char kSsid[] = "Airtel_Effortless";
 static const char kPassword[] = "Kainaat@123";
 
 static const char kServerUrl[] = "http://192.168.1.8:3000/upload";
 static const char kAudioBaseUrl[] = "http://192.168.1.8:3000/audio/";
-#endif
 
 static constexpr int kI2sWsPin = 15;
 static constexpr int kI2sSdPin = 16;

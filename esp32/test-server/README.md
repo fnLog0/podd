@@ -13,7 +13,7 @@ This is a minimal local server for testing the ESP32 firmware.
 ## Run
 
 ```bash
-cd /Users/nasimakhtar/Projects/fnlog0/podd/test-server
+cd /media/merklenode/Buildbox/bro/podd/esp32/test-server
 npm start
 ```
 
@@ -28,7 +28,7 @@ Point the ESP32 firmware to:
 
 Update these values in:
 
-- `/Users/nasimakhtar/Projects/fnlog0/podd/esp32/src/core/Config.h`
+- `/media/merklenode/Buildbox/bro/podd/esp32/src/app/RuntimeConfig.h`
 
 ## Test Endpoints
 
